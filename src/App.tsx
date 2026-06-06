@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Image as ImageIcon, ArrowDownRight, Fingerprint, Zap, Layers, Activity } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Image as ImageIcon, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check } from 'lucide-react';
 
 const PROJECTS_DATA = [
   {
@@ -20,28 +20,28 @@ const PROJECTS_DATA = [
         subtitle: 'Plantilla de Reserva Exitosa', 
         span: 'col-span-12 md:col-span-8', 
         height: 'h-[500px]', 
-        imageUrl: '/Recurso%2018historia%20zoom.jpg' 
+        imageUrl: '/Recurso 18historia zoom.png' 
       },
       { 
         title: 'Identidad Operativa', 
         subtitle: 'Carnet Corporativo', 
         span: 'col-span-12 md:col-span-4', 
         height: 'h-[500px]', 
-        imageUrl: '/WhatsApp%20Image%202026-06-05%20at%206.41.08%20PM.jpeg' 
+        imageUrl: '/WhatsApp Image 2026-06-05 at 6.41.08 PM.jpeg' 
       },
       { 
         title: 'Autoridad / Gamificación', 
         subtitle: 'Top Cerrador del Mes', 
         span: 'col-span-12 md:col-span-5', 
         height: 'h-[400px]',
-        imageUrl: '/WhatsApp%20Image%202026-06-03%20at%2010.15.57%20PM.jpeg' 
+        imageUrl: '/WhatsApp Image 2026-06-03 at 10.15.57 PM.jpeg' 
       },
       { 
         title: 'Cultura Organizacional', 
         subtitle: 'Día de las Madres', 
         span: 'col-span-12 md:col-span-7', 
         height: 'h-[400px]',
-        imageUrl: '/Maracay_Mesa%20de%20trabajo%201%20copia%203.jpg' 
+        imageUrl: '/Maracay_Mesa de trabajo 1 copia 3.jpg' 
       }
     ]
   },
@@ -181,6 +181,7 @@ export default function App() {
           <div className="hidden md:flex gap-8 text-xs font-semibold uppercase tracking-widest text-neutral-500">
             <a href="#manifiesto" className="hover:text-neutral-900 transition-colors">Sistema</a>
             <a href="#portafolio" className="hover:text-neutral-900 transition-colors">Portafolio</a>
+            <a href="#planes" className="hover:text-neutral-900 transition-colors">Planes</a>
             <a href="#" className="hover:text-neutral-900 transition-colors">Auditoría</a>
           </div>
         </div>
@@ -376,6 +377,106 @@ export default function App() {
             <AnimatePresence mode="wait">
               <ProjectContent project={PROJECTS_DATA[idx]} isDark={false} showLogo={true} />
             </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SECCIÓN DE PLANES */}
+      <section id="planes" className="py-32 px-6 relative z-20 bg-white/40 backdrop-blur-md border-t border-neutral-200/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-sm font-semibold tracking-widest text-[#2FC7EA] uppercase mb-4 flex items-center justify-center gap-2">
+              <Zap size={16} /> Inversión
+            </h2>
+            <h3 className="text-4xl md:text-5xl font-light tracking-tight text-neutral-900">
+              Elija su <span className="font-serif italic font-medium text-neutral-600">nivel operativo.</span>
+            </h3>
+            <p className="mt-6 text-neutral-500 font-light max-w-xl mx-auto">
+              Sistemas diseñados para escalar, sin importar el tamaño de su equipo comercial.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {/* Plan 1: Esencial */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white/60 backdrop-blur-md rounded-[2rem] p-8 border border-neutral-200/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+            >
+              <h4 className="text-xl font-semibold text-neutral-900 mb-2">Esencial</h4>
+              <p className="text-sm text-neutral-500 font-light mb-6">Para agentes independientes y corredores autónomos.</p>
+              <div className="mb-8">
+                <span className="text-4xl font-light tracking-tighter text-neutral-900">$99</span>
+                <span className="text-sm text-neutral-500">/mes</span>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['1 Usuario', 'Plantillas de Cierre Básicas', 'Exportación en JPG/PNG', 'Soporte Estándar'].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-600 font-light">
+                    <Check size={16} className="text-[#2FC7EA]" /> {feat}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-full border border-neutral-200 text-sm font-semibold text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors duration-300">
+                Comenzar
+              </button>
+            </motion.div>
+
+            {/* Plan 2: Agencia (Recomendado) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="bg-neutral-900 rounded-[2rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden transform md:scale-105 z-10"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#2FC7EA] rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
+              <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-[10px] font-semibold text-white tracking-widest uppercase mb-4">
+                Destacado
+              </div>
+              <h4 className="text-xl font-semibold text-white mb-2">Agencia</h4>
+              <p className="text-sm text-neutral-400 font-light mb-6">El ecosistema ideal para equipos de alto rendimiento.</p>
+              <div className="mb-8">
+                <span className="text-4xl font-light tracking-tighter text-white">$249</span>
+                <span className="text-sm text-neutral-400">/mes</span>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['Hasta 5 Usuarios', 'Sistema DesignOps Completo', 'Identidad Operativa (Carnets, Docs)', 'Soporte Prioritario', 'Actualizaciones Mensuales'].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-300 font-light">
+                    <Check size={16} className="text-[#2FC7EA]" /> {feat}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-full bg-white text-sm font-semibold text-neutral-900 hover:bg-[#2FC7EA] hover:text-white transition-colors duration-300">
+                Actualizar a Agencia
+              </button>
+            </motion.div>
+
+            {/* Plan 3: Enterprise */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+              className="bg-white/60 backdrop-blur-md rounded-[2rem] p-8 border border-neutral-200/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+            >
+              <h4 className="text-xl font-semibold text-neutral-900 mb-2">Enterprise</h4>
+              <p className="text-sm text-neutral-500 font-light mb-6">Para infraestructuras masivas y franquicias.</p>
+              <div className="mb-8">
+                <span className="text-4xl font-light tracking-tighter text-neutral-900">Custom</span>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['Usuarios Ilimitados', 'Auditoría de Marca Incluida', 'Integración CRM Personalizada', 'Consultoría Estratégica 1:1'].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-600 font-light">
+                    <Check size={16} className="text-[#EF007E]" /> {feat}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-full border border-neutral-200 text-sm font-semibold text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors duration-300">
+                Contactar Ventas
+              </button>
+            </motion.div>
           </div>
         </div>
       </section>
