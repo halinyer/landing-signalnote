@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Image as ImageIcon, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun } from 'lucide-react';
 
@@ -154,7 +154,7 @@ const ProjectContent = ({ project, isDark = false, showLogo = false }: any) => {
 const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
   <div className={`fixed inset-0 pointer-events-none -z-50 overflow-hidden transition-colors duration-1000 ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FAFAFA]'}`}>
     {/* Grid Lineal (Lovable Style) */}
-    <div className={`absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px] ${isDark ? 'opacity-20' : 'opacity-100'}`} />
+    <div className={`absolute inset-0 bg-[size:32px_32px] ${isDark ? 'bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] opacity-30' : 'bg-[linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] opacity-100'}`} />
     {/* Orbes de luz fijos y sutiles extraídos del logo con aceleración por GPU */}
     <div className={`absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#0055FF] rounded-full blur-[120px] ${isDark ? 'opacity-10' : 'opacity-15'} animate-pulse transform-gpu will-change-[filter,opacity]`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
     <div className={`absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#FF00D4] rounded-full blur-[120px] ${isDark ? 'opacity-5' : 'opacity-10'} animate-pulse transform-gpu will-change-[filter,opacity]`} style={{ animationDuration: '12s', animationDelay: '1s' }} />
@@ -163,7 +163,24 @@ const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
 
 export default function App() {
   const [idx, setIdx] = useState(0); 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('signalNote_theme');
+    return savedTheme === 'dark'; // Si es 'dark', será true. Por defecto false (light).
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Guardar la preferencia cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('signalNote_theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3800);
+    return () => clearTimeout(timer);
+  }, []);
+
   const nextProject = () => setIdx((prev) => (prev + 1) % PROJECTS_DATA.length);
   const prevProject = () => setIdx((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length);
 
@@ -172,14 +189,46 @@ export default function App() {
       
       <GlobalBackground isDark={isDarkMode} />
 
-      {/* HEADER NAVBAR */}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <motion.div 
+            key="preloader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-[#FAFAFA]'}`}
+          >
+            <motion.div
+               initial={{ opacity: 0, scale: 0.95 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+               className="flex flex-col items-center transform-gpu"
+            >
+              <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="w-24 md:w-32 h-auto mb-10 drop-shadow-xl" />
+              
+              <div className={`w-48 h-[2px] ${isDarkMode ? 'bg-white/10' : 'bg-neutral-200'} rounded-full overflow-hidden`}>
+                <motion.div 
+                  className="h-full bg-gradient-to-r from-[#0055FF] to-[#FF00D4]"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 3.2, ease: [0.25, 1, 0.5, 1], delay: 0.5 }}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!isLoading && (
+        <motion.div key="main-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+          {/* HEADER NAVBAR */}
       <nav className={`fixed top-0 w-full z-50 ${isDarkMode ? 'bg-[#0a0a0a]/70 border-white/10' : 'bg-[#FAFAFA]/70 border-white/20'} backdrop-blur-xl border-b transition-colors duration-500`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="h-7 w-auto" />
             <span className={`font-semibold tracking-tight ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>signalNote</span>
           </div>
-          <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
+          <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
             <a href="#manifiesto" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Sistema</a>
             <a href="#portafolio" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Portafolio</a>
             <a href="#planes" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Planes</a>
@@ -221,12 +270,12 @@ export default function App() {
             className={`text-6xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-semibold tracking-tighter leading-[0.95] ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-8 transition-colors duration-500`}
           >
             Diseño que escala. <br />
-            <span className={`font-serif italic font-light ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>Sistemas que venden.</span>
+            <span className={`font-serif italic font-light ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Sistemas que venden.</span>
           </motion.h1>
           
           <motion.p 
             variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-            className={`text-lg md:text-2xl font-light max-w-2xl leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}
+            className={`text-lg md:text-2xl font-light max-w-2xl leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}
           >
             Eliminamos la improvisación de su marca. Construimos ecosistemas visuales modulares para que su equipo comercial opere con máxima velocidad.
           </motion.p>
@@ -255,9 +304,9 @@ export default function App() {
             >
               <h2 className={`text-3xl md:text-4xl font-light tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>
                 La marca no es arte. <br/>
-                <span className={`font-serif italic ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>Es un activo operativo.</span>
+                <span className={`font-serif italic ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Es un activo operativo.</span>
               </h2>
-              <p className={`font-light leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
+              <p className={`font-light leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
                 El corretaje de alto nivel requiere activos visuales instantáneos. No puede permitirse cuellos de botella creativos ni inconsistencias que devalúen su inventario.
               </p>
             </motion.div>
@@ -280,7 +329,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-1`}>{item.title}</h4>
-                    <p className={`text-sm font-light leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>{item.desc}</p>
+                    <p className={`text-sm font-light leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -296,7 +345,7 @@ export default function App() {
             className={`lg:col-span-7 relative h-[550px] ${isDarkMode ? 'bg-neutral-900/50 border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]' : 'bg-white/50 border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)]'} backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center p-8 overflow-hidden group transition-colors duration-500`}
           >
             {/* Grid background subtil dentro de la tarjeta */}
-            <div className={`absolute inset-0 [background-size:20px_20px] ${isDarkMode ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] opacity-20' : 'bg-[radial-gradient(#a3a3a3_1px,transparent_1px)] opacity-40'}`} />
+            <div className={`absolute inset-0 [background-size:20px_20px] ${isDarkMode ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] opacity-20' : 'bg-[radial-gradient(#000000_1px,transparent_1px)] opacity-[0.15]'}`} />
             
             {/* Líneas SVG Animadas */}
             <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
@@ -369,7 +418,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto w-full relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-20">
             <div>
-              <h2 className={`text-sm font-semibold tracking-widest uppercase mb-2 flex items-center gap-2 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
+              <h2 className={`text-sm font-semibold tracking-widest uppercase mb-2 flex items-center gap-2 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
                 <ArrowDownRight size={16} /> Portafolio
               </h2>
               <h3 className={`text-4xl md:text-5xl lg:text-6xl font-light tracking-tight ${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors duration-500`}>
@@ -411,7 +460,7 @@ export default function App() {
             <h3 className={`text-4xl md:text-5xl font-light tracking-tight ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>
               Elija su <span className="font-serif italic font-medium text-neutral-600">nivel operativo.</span>
             </h3>
-            <p className={`mt-6 font-light max-w-xl mx-auto ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
+            <p className={`mt-6 font-light max-w-xl mx-auto ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
               Sistemas diseñados para escalar, sin importar el tamaño de su equipo comercial.
             </p>
           </div>
@@ -426,10 +475,10 @@ export default function App() {
               className={`${isDarkMode ? 'bg-neutral-900/60 border-white/10' : 'bg-white/60 border-neutral-200/60'} backdrop-blur-md rounded-[2rem] p-8 border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500`}
             >
               <h4 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-2`}>Básico</h4>
-              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>Mantenimiento de presencia digital y diseño base.</p>
+              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Mantenimiento de presencia digital y diseño base.</p>
               <div className="mb-8">
                 <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$199</span>
-                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>/mes</span>
+                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>/mes</span>
               </div>
               <ul className="space-y-4 mb-8">
                 {['12 publicaciones al mes', '8 historias', 'Diseño gráfico', 'Reporte mensual'].map((feat, i) => (
@@ -482,10 +531,10 @@ export default function App() {
               className={`${isDarkMode ? 'bg-neutral-900/60 border-white/10' : 'bg-white/60 border-neutral-200/60'} backdrop-blur-md rounded-[2rem] p-8 border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500`}
             >
               <h4 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-2`}>Premium</h4>
-              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>Marketing integral y producción visual de alto nivel.</p>
+              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Marketing integral y producción visual de alto nivel.</p>
               <div className="mb-8">
                 <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$1,299</span>
-                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>/mes</span>
+                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>/mes</span>
               </div>
               <ul className="space-y-4 mb-8">
                 {['Todo lo anterior', 'Producción audiovisual', 'Estrategia de marketing', 'Reunión semanal'].map((feat, i) => (
@@ -513,7 +562,8 @@ export default function App() {
           </div>
         </div>
       </footer>
-
+        </motion.div>
+      )}
     </div>
   );
 }
