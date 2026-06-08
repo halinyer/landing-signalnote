@@ -58,7 +58,7 @@ export default function App() {
                transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
                className="flex flex-col items-center transform-gpu"
             >
-              <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="w-24 md:w-32 h-auto mb-10" />
+              <img src="/logo.svg" alt="signalNote Logo" className="w-24 md:w-32 h-auto mb-10" />
               
               <div className={`w-48 h-[2px] ${isDarkMode ? 'bg-white/10' : 'bg-neutral-200'} rounded-full overflow-hidden`}>
                 <motion.div 
@@ -80,7 +80,7 @@ export default function App() {
       <nav className={`fixed top-0 w-full z-50 ${isDarkMode ? 'bg-[#0a0a0a]/70 border-white/10' : 'bg-[#FAFAFA]/70 border-white/20'} backdrop-blur-xl border-b transition-colors duration-500`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="h-7 w-auto" />
+            <img src="/logo.svg" alt="signalNote Logo" className="h-7 w-auto" />
             <span className={`font-semibold tracking-tight ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>signalNote</span>
           </div>
           <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
@@ -98,49 +98,84 @@ export default function App() {
         </div>
       </nav>
 
-      {/* 1. HERO SECTION (Pura tipografía y peso visual) */}
-      <header className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20">
+      {/* 1. HERO SECTION (Video Container) */}
+      <header className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 pt-24 pb-12">
         <motion.div 
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: { opacity: 0 },
-            show: { 
-              opacity: 1, 
-              transition: { staggerChildren: 0.15, delayChildren: 0.5 }
-            }
-          }}
-          className="max-w-5xl z-10 flex flex-col items-center transform-gpu"
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full max-w-7xl h-[80vh] min-h-[600px] rounded-[2rem] md:rounded-[3rem] overflow-hidden flex flex-col justify-center items-center text-center shadow-2xl border border-white/10"
         >
-          <motion.div 
-            variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-            className={`inline-flex items-center gap-2 mb-8 ${isDarkMode ? 'bg-white/5 border-white/10 text-neutral-300' : 'bg-white/60 border-neutral-200/60 text-neutral-600'} backdrop-blur-md px-4 py-2 rounded-full text-[10px] sm:text-xs font-medium tracking-widest uppercase shadow-sm transition-colors duration-500`}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF]"></span>
-            Agencia de Infraestructura Visual
-          </motion.div>
+          {/* El Video de Fondo */}
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            src="/hero-video.mp4" 
+          />
           
-          <motion.h1 
-            variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-            className={`text-6xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-semibold tracking-tighter leading-[0.95] ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-8 transition-colors duration-500`}
-          >
-            Diseño que escala. <br />
-            <span className={`font-serif italic font-light ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Sistemas que venden.</span>
-          </motion.h1>
+          {/* El Overlay Oscuro (Opacidad fuerte + Blur para estilo Apple) */}
+          <div className="absolute inset-0 bg-neutral-950/60 sm:bg-neutral-950/70 z-0 backdrop-blur-sm"></div>
           
-          <motion.p 
-            variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-            className={`text-lg md:text-2xl font-light max-w-2xl leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}
-          >
-            Eliminamos la improvisación de su marca. Construimos ecosistemas visuales modulares para que su equipo comercial opere con máxima velocidad.
-          </motion.p>
+          {/* Gradiente adicional abajo para asegurar que el scroll-down se mezcle lindo */}
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent z-0"></div>
 
+          {/* El Contenido (Texto minimalista estilo Apple) encima del video */}
           <motion.div 
-            variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1 } } }}
-            className="mt-16 flex flex-col items-center gap-2 text-neutral-400"
+            className="relative z-10 flex flex-col items-center px-6 w-full max-w-4xl mx-auto transform-gpu"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: { opacity: 0 },
+              show: { 
+                opacity: 1, 
+                transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+              }
+            }}
           >
-            <span className="text-[10px] uppercase tracking-widest font-semibold">Descubra el Sistema</span>
-            <div className="w-[1px] h-12 bg-gradient-to-b from-neutral-300 to-transparent"></div>
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
+              className="inline-flex items-center gap-2 mb-10 bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[10px] sm:text-xs font-medium tracking-widest uppercase text-white shadow-sm"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+              SignalNote
+            </motion.div>
+            
+            <motion.h1 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
+              className="text-6xl sm:text-7xl md:text-9xl font-bold tracking-tighter leading-[0.9] text-white mb-6 drop-shadow-2xl"
+            >
+              Su inventario.<br />
+              <span className="text-white/60">A otro nivel.</span>
+            </motion.h1>
+            
+            <motion.p 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
+              className="text-xl md:text-3xl font-medium tracking-tight max-w-2xl text-neutral-300 drop-shadow-lg"
+            >
+              Ecosistemas visuales para el real estate de lujo.
+            </motion.p>
+
+            <motion.div 
+              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1, delay: 0.8 } } }}
+              className="mt-20 flex flex-col items-center gap-3 text-white/40 cursor-pointer group"
+              onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
+            >
+              <span className="text-[10px] uppercase tracking-widest font-semibold group-hover:text-white transition-colors duration-300">Descubrir</span>
+              <div className="relative w-[1px] h-16 bg-white/10 overflow-hidden">
+                <motion.div 
+                  className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent via-white to-transparent"
+                  animate={{ y: ['-100%', '200%'] }}
+                  transition={{ 
+                    duration: 1.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                />
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </header>
