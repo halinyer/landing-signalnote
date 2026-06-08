@@ -1,155 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Image as ImageIcon, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun } from 'lucide-react';
 
-const PROJECTS_DATA = [
-  {
-    id: 'framework-01',
-    clientName: 'Dream Home',
-    category: 'Infraestructura Inmobiliaria',
-    brandConfig: {
-      primary: '#D6007A', // El Fucsia/Magenta de Dream Home
-      gradientStart: 'rgba(214, 0, 122, 0.15)',
-      gradientEnd: 'rgba(214, 0, 122, 0.02)',
-      logoText: 'DH',
-      logoUrl: null, 
-    },
-    bentoItems: [
-      { 
-        title: 'Cierres & Conversión', 
-        subtitle: 'Plantilla de Reserva Exitosa', 
-        span: 'col-span-12 md:col-span-8', 
-        height: 'h-[500px]', 
-        imageUrl: '/Recurso 18historia zoom.png' 
-      },
-      { 
-        title: 'Identidad Operativa', 
-        subtitle: 'Carnet Corporativo', 
-        span: 'col-span-12 md:col-span-4', 
-        height: 'h-[500px]', 
-        imageUrl: '/WhatsApp Image 2026-06-05 at 6.41.08 PM.jpeg' 
-      },
-      { 
-        title: 'Autoridad / Gamificación', 
-        subtitle: 'Top Cerrador del Mes', 
-        span: 'col-span-12 md:col-span-5', 
-        height: 'h-[400px]',
-        imageUrl: '/WhatsApp Image 2026-06-03 at 10.15.57 PM.jpeg' 
-      },
-      { 
-        title: 'Cultura Organizacional', 
-        subtitle: 'Día de las Madres', 
-        span: 'col-span-12 md:col-span-7', 
-        height: 'h-[400px]',
-        imageUrl: '/Maracay_Mesa de trabajo 1 copia 3.jpg' 
-      }
-    ]
-  },
-  {
-    id: 'framework-02',
-    clientName: 'Dermaclinic Estética',
-    category: 'Ecosistema Visual Médico',
-    brandConfig: {
-      primary: '#FF00D4',
-      gradientStart: 'rgba(255, 0, 212, 0.12)',
-      gradientEnd: 'rgba(255, 160, 122, 0.08)',
-      logoText: 'DC',
-      logoUrl: null, 
-    },
-    bentoItems: [
-      { title: 'Tratamientos', subtitle: 'Catálogo Visual', span: 'col-span-12 md:col-span-6', height: 'h-64' },
-      { title: 'Antes/Después', subtitle: 'Comprobación', span: 'col-span-12 md:col-span-6', height: 'h-64' },
-      { title: 'Autoridad', subtitle: 'Perfil Médico', span: 'col-span-12', height: 'h-56' }
-    ]
-  }
-];
-
-const ProjectContent = ({ project, isDark = false, showLogo = false }: any) => {
-  const textColor = isDark ? 'text-white' : 'text-neutral-900';
-  const subTextColor = isDark ? 'text-neutral-400' : 'text-neutral-500';
-  const cardBg = isDark ? 'bg-neutral-900/50' : 'bg-white/80 backdrop-blur-md';
-  const cardBorder = isDark ? 'border-white/10' : 'border-neutral-200/60';
-  const imgPlaceholderBg = isDark ? 'bg-neutral-800' : 'bg-neutral-50/50';
-
-  return (
-    <motion.div
-      key={project.id}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} // Curva Apple-like
-      className="w-full relative z-10"
-    >
-      <div className="mb-10 flex flex-col md:flex-row md:items-center gap-6">
-        {showLogo && (
-          <div className={`w-20 h-20 shrink-0 rounded-2xl border ${cardBorder} shadow-sm flex items-center justify-center overflow-hidden bg-white/50 backdrop-blur-sm`}>
-            {project.brandConfig.logoUrl ? (
-              <img src={project.brandConfig.logoUrl} alt={`${project.clientName} Logo`} className="w-full h-full object-contain p-2" />
-            ) : (
-              <span className={`text-2xl font-serif font-semibold tracking-tighter ${textColor}`}>
-                {project.brandConfig.logoText}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div>
-          <h3 className={`text-sm font-semibold tracking-widest uppercase mb-2`} style={{ color: project.brandConfig.primary }}>
-            {project.category}
-          </h3>
-          <h2 className={`text-4xl md:text-5xl font-light tracking-tight ${textColor}`}>
-            {project.clientName}
-          </h2>
-        </div>
-      </div>
-
-      <motion.div 
-        className="grid grid-cols-12 gap-4"
-        initial="hidden"
-        animate="show"
-        variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
-      >
-        {project.bentoItems.map((item: any, i: number) => (
-          <motion.div
-            key={i}
-            variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}
-            whileHover={{ scale: 1.01, boxShadow: `0 20px 40px -10px ${project.brandConfig.gradientStart}` }}
-            className={`relative overflow-hidden ${cardBg} border ${cardBorder} rounded-xl flex flex-col transition-all duration-500 group ${item.span} ${item.height}`}
-          >
-            {/* Contenedor de la Imagen */}
-            <div className={`w-full h-full absolute inset-0 ${imgPlaceholderBg} overflow-hidden`}>
-               {item.imageUrl ? (
-                 <img 
-                   src={item.imageUrl} 
-                   alt={item.title} 
-                   className="w-full h-full object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out" 
-                 />
-               ) : (
-                 <div className="w-full h-full flex flex-col items-center justify-center border border-dashed border-neutral-300">
-                    <ImageIcon size={24} className={isDark ? 'text-neutral-700' : 'text-neutral-300'} />
-                    <span className={`text-[10px] mt-2 font-medium tracking-widest uppercase ${subTextColor}`}>Contenedor JPG</span>
-                 </div>
-               )}
-              
-              {/* Overlay suave para legibilidad del texto */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              
-              {/* Resplandor de marca */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                   style={{ boxShadow: `inset 0 0 0 1px ${project.brandConfig.primary}50` }} />
-            </div>
-
-            {/* Caja de Texto Superpuesta */}
-            <div className={`absolute bottom-0 left-0 w-full p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out`}>
-              <h4 className="text-sm font-semibold tracking-wide uppercase text-white drop-shadow-md">{item.title}</h4>
-              <p className="text-xs mt-1 text-neutral-200 drop-shadow-md">{item.subtitle}</p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </motion.div>
-  );
-};
+import { PROJECTS_DATA } from './data/projects';
+import { ProjectContent } from './components/Portfolio/ProjectContent';
 
 const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
   <div className={`fixed inset-0 pointer-events-none -z-50 overflow-hidden transition-colors duration-1000 ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FAFAFA]'}`}>
@@ -177,7 +31,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3800);
+    }, 3500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -201,17 +55,18 @@ export default function App() {
             <motion.div
                initial={{ opacity: 0, scale: 0.95 }}
                animate={{ opacity: 1, scale: 1 }}
-               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
                className="flex flex-col items-center transform-gpu"
             >
-              <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="w-24 md:w-32 h-auto mb-10 drop-shadow-xl" />
+              <img src="/Recurso 5Logo N Full Color (1).svg" alt="signalNote Logo" className="w-24 md:w-32 h-auto mb-10" />
               
               <div className={`w-48 h-[2px] ${isDarkMode ? 'bg-white/10' : 'bg-neutral-200'} rounded-full overflow-hidden`}>
                 <motion.div 
-                  className="h-full bg-gradient-to-r from-[#0055FF] to-[#FF00D4]"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 3.2, ease: [0.25, 1, 0.5, 1], delay: 0.5 }}
+                  className="h-full w-full bg-gradient-to-r from-[#0055FF] to-[#FF00D4] origin-left transform-gpu"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 2.5, ease: [0.25, 1, 0.5, 1], delay: 0.8 }}
+                  style={{ willChange: 'transform' }}
                 />
               </div>
             </motion.div>
@@ -444,7 +299,7 @@ export default function App() {
 
           <div className="overflow-hidden">
             <AnimatePresence mode="wait">
-              <ProjectContent project={PROJECTS_DATA[idx]} isDark={isDarkMode} showLogo={true} />
+              <ProjectContent project={PROJECTS_DATA[idx]} isDark={isDarkMode} />
             </AnimatePresence>
           </div>
         </div>
