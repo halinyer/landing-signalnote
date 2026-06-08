@@ -22,6 +22,7 @@ export default function App() {
     return savedTheme === 'dark'; // Si es 'dark', será true. Por defecto false (light).
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Guardar la preferencia cada vez que cambie
   useEffect(() => {
@@ -33,6 +34,14 @@ export default function App() {
       setIsLoading(false);
     }, 3500);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const nextProject = () => setIdx((prev) => (prev + 1) % PROJECTS_DATA.length);
@@ -76,35 +85,36 @@ export default function App() {
 
       {!isLoading && (
         <motion.div key="main-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-          {/* HEADER NAVBAR */}
-      <nav className={`fixed top-0 w-full z-50 ${isDarkMode ? 'bg-[#0a0a0a]/70 border-white/10' : 'bg-[#FAFAFA]/70 border-white/20'} backdrop-blur-xl border-b transition-colors duration-500`}>
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      {/* HEADER NAVBAR */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? (isDarkMode ? 'bg-[#0a0a0a]/80 border-white/10 backdrop-blur-xl py-4' : 'bg-[#FAFAFA]/90 border-neutral-200/50 backdrop-blur-xl py-4 shadow-sm') : 'bg-transparent border-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.svg" alt="signalNote Logo" className="h-7 w-auto" />
-            <span className={`font-semibold tracking-tight ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>signalNote</span>
+            <img src="/logo.svg" alt="signalNote Logo" className={`h-7 w-auto ${(!isScrolled || isDarkMode) ? 'brightness-0 invert' : ''} transition-all duration-500`} />
+            <span className={`font-semibold tracking-tight transition-colors duration-500 ${!isScrolled ? 'text-white' : (isDarkMode ? 'text-white' : 'text-neutral-900')}`}>signalNote</span>
           </div>
-          <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
-            <a href="#manifiesto" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Sistema</a>
-            <a href="#portafolio" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Portafolio</a>
-            <a href="#planes" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Planes</a>
-            <a href="#" className={`hover:${isDarkMode ? 'text-white' : 'text-neutral-900'} transition-colors`}>Auditoría</a>
+          <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest transition-colors duration-500 ${!isScrolled ? 'text-white/80' : (isDarkMode ? 'text-neutral-400' : 'text-neutral-600')}`}>
+            <a href="#manifiesto" className={`hover:text-white transition-colors`}>Sistema</a>
+            <a href="#portafolio" className={`hover:text-white transition-colors`}>Portafolio</a>
+            <a href="#planes" className={`hover:text-white transition-colors`}>Planes</a>
+            <a href="#" className={`hover:text-white transition-colors`}>Auditoría</a>
             
-            <div className={`w-[1px] h-4 ${isDarkMode ? 'bg-white/20' : 'bg-neutral-300'} mx-2`}></div>
+            <div className={`w-[1px] h-4 ${!isScrolled ? 'bg-white/30' : (isDarkMode ? 'bg-white/20' : 'bg-neutral-300')} mx-2 transition-colors duration-500`}></div>
             
-            <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2 rounded-full ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-neutral-900/5'} transition-colors flex items-center justify-center`}>
-              {isDarkMode ? <Sun size={16} className="text-neutral-400 hover:text-white" /> : <Moon size={16} className="text-neutral-600 hover:text-neutral-900" />}
+            <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2 rounded-full ${!isScrolled ? 'hover:bg-white/10 text-white' : (isDarkMode ? 'hover:bg-white/10 text-neutral-400 hover:text-white' : 'hover:bg-neutral-900/5 text-neutral-600 hover:text-neutral-900')} transition-colors flex items-center justify-center`}>
+              {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* 1. HERO SECTION (Video Container) */}
-      <header className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 pt-24 pb-12">
+
+      {/* 1. HERO SECTION (Video Full Bleed) */}
+      <header className="relative w-full h-screen min-h-[700px] flex flex-col justify-center items-center overflow-hidden bg-neutral-950">
         <motion.div 
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-7xl h-[80vh] min-h-[600px] rounded-[2rem] md:rounded-[3rem] overflow-hidden flex flex-col justify-center items-center text-center shadow-2xl border border-white/10"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 w-full h-full flex flex-col justify-center items-center"
         >
           {/* El Video de Fondo */}
           <video 
@@ -124,7 +134,7 @@ export default function App() {
 
           {/* El Contenido (Texto minimalista estilo Apple) encima del video */}
           <motion.div 
-            className="relative z-10 flex flex-col items-center px-6 w-full max-w-4xl mx-auto transform-gpu"
+            className="relative z-10 flex flex-col items-center px-6 w-full max-w-4xl mx-auto transform-gpu mt-16 sm:mt-24"
             initial="hidden"
             animate="show"
             variants={{
@@ -147,7 +157,7 @@ export default function App() {
               variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
               className="text-6xl sm:text-7xl md:text-9xl font-bold tracking-tighter leading-[0.9] text-white mb-6 drop-shadow-2xl"
             >
-              Su inventario.<br />
+              Su creativo.<br />
               <span className="text-white/60">A otro nivel.</span>
             </motion.h1>
             
