@@ -17,7 +17,6 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
   const mutedBgColor = isDark ? 'bg-neutral-950/80' : 'bg-[#F8F8F7]';
   const mockupBgColor = isDark ? 'bg-neutral-900' : 'bg-neutral-100';
   const mockupBorderColor = isDark ? 'border-white/5' : 'border-neutral-200/60';
-  const mockupHoverBg = isDark ? 'group-hover:bg-neutral-800' : 'group-hover:bg-neutral-200/50';
 
   return (
     <motion.div
@@ -93,15 +92,15 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
               whileHover={{ scale: 0.995 }}
               className={`flex flex-col ${item.span} group`}
             >
-              {/* EL CONTENEDOR AUTO-MOCKUP */}
-              <div className={`w-full ${item.height} ${mockupBgColor} border ${mockupBorderColor} rounded-xl p-8 md:p-12 flex items-center justify-center overflow-hidden transition-colors duration-500 ${mockupHoverBg}`}>
+              {/* EL CONTENEDOR FULL BLEED */}
+              <div className={`w-full ${item.height} ${mockupBgColor} border ${mockupBorderColor} rounded-xl flex items-center justify-center overflow-hidden transition-colors duration-500 relative group-hover:border-neutral-300 dark:group-hover:border-white/20`}>
                 
-                {/* SI HAY IMAGEN, SE COMPORTA COMO UN PAPEL FÍSICO */}
+                {/* SI HAY IMAGEN, SE EXPANDE AL BORDE */}
                 {item.imageUrl ? (
                   <img 
                     src={item.imageUrl} 
                     alt={item.title} 
-                    className={`max-w-full max-h-full object-contain ${isDark ? 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)]' : 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]'} transition-shadow duration-500`} 
+                    className={`w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-[1.03]`} 
                   />
                 ) : (
                   <div className={`text-center flex flex-col items-center ${isDark ? 'opacity-20' : 'opacity-40'}`}>
@@ -111,8 +110,8 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
                 )}
 
               </div>
-              <div className="mt-4 flex justify-between items-center px-2">
-                <h4 className={`text-sm font-medium ${textColor}`}>{item.title}</h4>
+              <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center px-2 gap-1">
+                <h4 className={`text-sm font-semibold tracking-wide uppercase ${textColor}`}>{item.title}</h4>
                 <p className={`text-xs ${subTextColor} font-serif italic`}>{item.subtitle}</p>
               </div>
             </motion.div>
