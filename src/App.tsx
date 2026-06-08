@@ -7,11 +7,20 @@ import { ProjectContent } from './components/Portfolio/ProjectContent';
 
 const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
   <div className={`fixed inset-0 pointer-events-none -z-50 overflow-hidden transition-colors duration-1000 ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FAFAFA]'}`}>
-    {/* Grid Lineal (Lovable Style) */}
-    <div className={`absolute inset-0 bg-[size:32px_32px] ${isDark ? 'bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] opacity-30' : 'bg-[linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] opacity-100'}`} />
-    {/* Orbes de luz fijos y sutiles extraídos del logo con aceleración por GPU */}
-    <div className={`absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[#0055FF] rounded-full blur-[120px] ${isDark ? 'opacity-10' : 'opacity-15'} animate-pulse transform-gpu will-change-[filter,opacity]`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
-    <div className={`absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-[#FF00D4] rounded-full blur-[120px] ${isDark ? 'opacity-5' : 'opacity-10'} animate-pulse transform-gpu will-change-[filter,opacity]`} style={{ animationDuration: '12s', animationDelay: '1s' }} />
+    {/* Textura de Ruido (Film Grain) muy elegante */}
+    <div 
+      className={`absolute inset-0 ${isDark ? 'opacity-[0.06]' : 'opacity-[0.08]'}`}
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        backgroundRepeat: 'repeat',
+      }}
+    />
+    
+    {/* Grid Lineal de Alta Costura (Más amplio y un poco más visible) */}
+    <div className={`absolute inset-0 bg-[size:64px_64px] ${isDark ? 'bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] opacity-70' : 'bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] opacity-70'}`} />
+    
+    {/* Softbox / Luz de Acento Monocromática superior (Estática) */}
+    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[60vh] max-w-[1200px] rounded-[100%] blur-[120px] ${isDark ? 'bg-white opacity-[0.02]' : 'bg-neutral-900 opacity-[0.02]'} transform-gpu`} />
   </div>
 );
 
