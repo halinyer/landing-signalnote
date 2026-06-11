@@ -47,21 +47,21 @@ export const PROJECTS_DATA: Project[] = [
         subtitle: 'Carnet Corporativo', 
         span: 'col-span-12 md:col-span-4', 
         height: 'h-[500px]', 
-        imageUrl: '/WhatsApp Image 2026-06-05 at 6.41.08 PM.jpeg' 
+        imageUrl: '/Gemini_Generated_Image_5fas4k5fas4k5fas.png' 
       },
       { 
         title: 'Autoridad / Gamificación', 
         subtitle: 'Top Cerrador del Mes', 
         span: 'col-span-12 md:col-span-5', 
         height: 'h-[400px]',
-        imageUrl: '/WhatsApp Image 2026-06-03 at 10.15.57 PM.jpeg' 
+        imageUrl: '/Gemini_Generated_Image_w3o2qxw3o2qxw3o2.png' 
       },
       { 
         title: 'Cultura Organizacional', 
         subtitle: 'Día de las Madres', 
         span: 'col-span-12 md:col-span-7', 
         height: 'h-[400px]',
-        imageUrl: '/Maracay_Mesa de trabajo 1 copia 3.jpg' 
+        imageUrl: '/ChatGPT Image Jun 10, 2026, 11_57_56 PM.png' 
       }
     ]
   },
