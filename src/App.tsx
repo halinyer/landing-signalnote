@@ -16,11 +16,11 @@ const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
       }}
     />
     
-    {/* Grid Lineal de Alta Costura (Más amplio y un poco más visible) */}
-    <div className={`absolute inset-0 bg-[size:64px_64px] ${isDark ? 'bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] opacity-70' : 'bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] opacity-70'}`} />
+    {/* Grid Lineal de Alta Costura (Más amplio y sutilmente más visible) */}
+    <div className={`absolute inset-0 bg-[size:64px_64px] ${isDark ? 'bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] opacity-100' : 'bg-[linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] opacity-100'}`} />
     
     {/* Softbox / Luz de Acento Monocromática superior (Estática) */}
-    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[60vh] max-w-[1200px] rounded-[100%] blur-[120px] ${isDark ? 'bg-white opacity-[0.02]' : 'bg-neutral-900 opacity-[0.02]'} transform-gpu`} />
+    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[60vh] max-w-[1200px] rounded-[100%] blur-[120px] ${isDark ? 'bg-white opacity-[0.04]' : 'bg-neutral-900 opacity-[0.02]'} transform-gpu`} />
   </div>
 );
 
@@ -131,12 +131,12 @@ export default function App() {
             loop 
             muted 
             playsInline
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0 transform-gpu"
             src="/hero-video.mp4" 
           />
           
-          {/* El Overlay Oscuro (Opacidad fuerte + Blur para estilo Apple) */}
-          <div className="absolute inset-0 bg-neutral-950/60 sm:bg-neutral-950/70 z-0 backdrop-blur-sm"></div>
+          {/* El Overlay Oscuro (Opacidad fuerte para contrastar, optimizado sin blur) */}
+          <div className="absolute inset-0 bg-neutral-950/70 sm:bg-neutral-950/80 z-0"></div>
           
           {/* Gradiente adicional abajo para asegurar que el scroll-down se mezcle lindo */}
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent z-0"></div>
