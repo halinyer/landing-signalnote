@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun, Image as ImageIcon } from 'lucide-react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun, Image as ImageIcon, MousePointer2, PenTool, Type, Square, DownloadCloud } from 'lucide-react';
 
 import { PROJECTS_DATA } from './data/projects';
 import { ProjectContent } from './components/Portfolio/ProjectContent';
@@ -24,176 +24,320 @@ const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
   </div>
 );
 
-// COMPONENTE: Anatomía con Scrollytelling (Optimizado para Móvil estilo Stripe)
+// COMPONENTE: Anatomía con Pestañas Interactivas y Auto-play (Estilo Premium)
+// COMPONENTE: Anatomía Faux UI (Editor de Diseño Simulado)
 const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activePhase, setActivePhase] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0.6 }); // Esperar a que el 60% sea visible
 
-  // OPACIDADES Y DESPLAZAMIENTOS EN Y (Matriz estricta de 0 a 1 para evitar bugs de extrapolación)
-  const text1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.3, 1], [1, 1, 0, 0]);
-  const text1Y = useTransform(scrollYProgress, [0, 0.25, 0.3, 1], [0, 0, -50, -50]); 
-  const text1Display = useTransform(text1Opacity, (v) => v > 0 ? "flex" : "none");
+  useEffect(() => {
+    if (!isAutoPlaying || !isInView) return;
 
-  const text2Opacity = useTransform(scrollYProgress, [0, 0.3, 0.4, 0.6, 0.7, 1], [0, 0, 1, 1, 0, 0]);
-  const text2Y = useTransform(scrollYProgress, [0, 0.3, 0.4, 0.6, 0.7, 1], [50, 50, 0, 0, -50, -50]); 
-  const text2Display = useTransform(text2Opacity, (v) => v > 0 ? "flex" : "none");
+    const timer = window.setInterval(() => {
+      setActivePhase((prev) => (prev + 1) % 3);
+    }, 4500);
 
-  const text3Opacity = useTransform(scrollYProgress, [0, 0.7, 0.8, 1], [0, 0, 1, 1]);
-  const text3Y = useTransform(scrollYProgress, [0, 0.7, 0.8, 1], [50, 50, 0, 0]); 
-  const text3Display = useTransform(text3Opacity, (v) => v > 0 ? "flex" : "none");
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [isAutoPlaying, isInView]);
 
-  const step1ImgOpacity = useTransform(scrollYProgress, [0, 0.3, 0.35, 1], [1, 1, 0, 0]); 
-  const step1Display = useTransform(step1ImgOpacity, (v) => v > 0 ? "flex" : "none");
+  const handleTabClick = (index: number) => {
+    setActivePhase(index);
+    setIsAutoPlaying(false); // Detener auto-play si el usuario interactúa
+  };
 
-  const step2ImgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.45, 0.75, 1], [0, 0, 1, 0, 0]); 
-  const step2Display = useTransform(step2ImgOpacity, (v) => v > 0 ? "flex" : "none");
-
-  const step3ImgOpacity = useTransform(scrollYProgress, [0, 0.65, 0.85, 1], [0, 0, 1, 1]); 
-  const step3Display = useTransform(step3ImgOpacity, (v) => v > 0 ? "flex" : "none");
-  
-  const mockupScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
+  const phasesData = [
+    {
+      title: "Estructura Base.",
+      subtitle: "Fase 01 / Wireframe",
+      desc: "Trazamos el esqueleto UX perfecto en nuestro lienzo para maximizar la conversión."
+    },
+    {
+      title: "Identidad Visual.",
+      subtitle: "Fase 02 / Inyección",
+      desc: "Inyectamos los colores corporativos y tipografía de manera automática y precisa."
+    },
+    {
+      title: "Activo de Venta.",
+      subtitle: "Fase 03 / Output",
+      desc: "La ficha se renderiza y queda lista para capturar prospectos de alto valor."
+    }
+  ];
 
   return (
-    <section id="anatomia" ref={containerRef} className={`relative h-[300vh] border-t transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a]/30 border-white/10' : 'bg-white border-slate-200/50'}`}>
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-24 items-center pt-20 lg:pt-0">
-          
-          {/* LADO DERECHO (Móvil: Arriba) - El Mockup */}
-          <div className="relative w-full aspect-square md:aspect-[4/5] max-h-[40vh] lg:max-h-[75vh] flex items-center justify-center lg:order-2">
-            <motion.div style={{ scale: mockupScale }} className={`relative w-full max-w-sm lg:max-w-full h-full rounded-[1.5rem] lg:rounded-[2rem] shadow-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200/50 bg-white'}`}>
-              
-              {/* FASE 1: WIREFRAME */}
-              <motion.div style={{ opacity: step1ImgOpacity, display: step1Display }} className={`absolute inset-0 p-4 lg:p-6 flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
-                 <div className={`w-full aspect-[4/3] rounded-xl border-2 border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-neutral-800' : 'bg-slate-200/50 border-slate-300'}`}>
-                    <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 ${isDark ? 'text-neutral-800' : 'text-slate-300'}`} />
-                 </div>
-                 
-                 <div className="flex justify-between items-center mt-2">
-                   <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                   <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                 </div>
-                 <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-300'}`}></div>
-                 
-                 <div className="flex gap-2 mt-2">
-                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                 </div>
-
-                 <div className={`mt-auto h-12 w-full rounded-xl transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-              </motion.div>
-
-              {/* FASE 2: INYECCIÓN IDENTIDAD */}
-              <motion.div style={{ opacity: step2ImgOpacity, display: step2Display }} className={`absolute inset-0 p-4 lg:p-6 flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
-                 <div className={`w-full aspect-[4/3] rounded-xl flex items-center justify-center transition-colors duration-500 bg-[#0055FF]/10 border border-[#0055FF]/20`}>
-                    <div className="w-16 h-16 bg-[#0055FF]/30 rounded-full blur-xl"></div>
-                 </div>
-                 
-                 <div className="flex justify-between items-center mt-2">
-                   <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
-                   <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
-                 </div>
-                 <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
-                 
-                 <div className="flex gap-2 mt-2">
-                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
-                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
-                 </div>
-
-                 <div className="mt-auto h-12 w-full bg-[#0055FF] rounded-xl shadow-lg shadow-[#0055FF]/20"></div>
-              </motion.div>
-
-              {/* FASE 3: OUTPUT FINAL */}
-              <motion.div style={{ opacity: step3ImgOpacity, display: step3Display }} className={`absolute inset-0 flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}>
-                <div className="relative w-full aspect-[4/3]">
-                  <img 
-                    src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop" 
-                    alt="Luxury Mansion" 
-                    className="w-full h-full object-cover"
+    <section ref={sectionRef} id="anatomia" className={`relative min-h-screen py-16 lg:py-20 flex items-center border-t transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a]/30 border-white/10' : 'bg-white border-slate-200/50'} overflow-hidden`}>
+      <div className="max-w-[1400px] mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        {/* LADO IZQUIERDO - Pestañas (Tabs) */}
+        <div className="flex flex-col gap-2 w-full lg:col-span-5 xl:col-span-4 lg:order-1 relative z-10 max-w-lg mx-auto lg:mx-0">
+          {phasesData.map((phase, idx) => {
+            const isActive = activePhase === idx;
+            return (
+              <button 
+                key={idx}
+                onClick={() => handleTabClick(idx)}
+                className={`text-left group relative p-5 lg:p-6 rounded-2xl transition-all duration-500 outline-none border-l-2 ${isActive ? 'border-[#0055FF] opacity-100' : 'border-transparent opacity-40 hover:opacity-70'}`}
+              >
+                {/* Fondo deslizante (Card Highlight) */}
+                {isActive && (
+                  <motion.div 
+                    layoutId="activePhaseBackground"
+                    className={`absolute inset-0 rounded-2xl ${isDark ? 'bg-[#1a1a1a] border border-white/5' : 'bg-slate-100 border border-slate-200/50'}`}
+                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-neutral-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
-                    Exclusiva
-                  </div>
-                </div>
-                
-                <div className="p-5 flex flex-col flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[#0055FF] font-semibold text-lg">$5,450,000</span>
-                    <span className={`text-[10px] font-medium tracking-widest ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>MLS 4920</span>
-                  </div>
+                )}
+
+                <div className="relative z-10">
+                  <span className={`text-[10px] font-semibold tracking-widest uppercase mb-2 block transition-colors ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>
+                    {phase.subtitle}
+                  </span>
+                  <h3 className={`text-2xl md:text-3xl font-medium tracking-tight transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {phase.title.split(' ')[0]} <span className={`font-serif italic font-light ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>{phase.title.split(' ')[1]}</span>
+                  </h3>
                   
-                  <h4 className={`text-xl font-medium tracking-tight mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    1240 Miami Beach Blvd
-                  </h4>
-                  
-                  <div className="flex gap-4 mb-auto">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>5</span>
-                      <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Beds</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>6</span>
-                      <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Baths</span>
-                    </div>
-                  </div>
-
-                  <button className="w-full mt-4 h-12 bg-[#0055FF] hover:bg-[#0044CC] text-white rounded-xl font-medium transition-colors duration-300 shadow-lg shadow-[#0055FF]/25">
-                    Agendar Visita
-                  </button>
+                  {/* Descripción (Aparece y desaparece) */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: "0.75rem" }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className={`text-sm font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+                          {phase.desc}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
-
-            </motion.div>
-          </div>
-
-          {/* LADO IZQUIERDO (Móvil: Abajo) - Contenedor de Textos */}
-          <div className="relative h-[200px] lg:h-[350px] flex items-center w-full lg:order-1 text-center lg:text-left">
-            
-            <motion.div 
-              style={{ opacity: text1Opacity, y: text1Y, display: text1Display }} 
-              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
-            >
-              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 01 / Wireframe</span>
-              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Estructura <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Base.</span>
-              </h3>
-              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                Definimos el esqueleto de la ficha de propiedad para maximizar el impacto visual y la retención del comprador.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              style={{ opacity: text2Opacity, y: text2Y, display: text2Display }} 
-              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
-            >
-              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 02 / Inyección</span>
-              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Identidad <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Visual.</span>
-              </h3>
-              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                Inyectamos de forma estricta sus colores corporativos, tipografía y estilo premium. Imposible romper la marca.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              style={{ opacity: text3Opacity, y: text3Y, display: text3Display }} 
-              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
-            >
-              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 03 / Output</span>
-              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Activo de <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Venta.</span>
-              </h3>
-              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                La ficha de propiedad cobra vida, lista para que su equipo la despliegue y atraiga a clientes de alto valor.
-              </p>
-            </motion.div>
-
-          </div>
-
+              </button>
+            );
+          })}
         </div>
+
+        {/* LADO DERECHO - El Faux Editor */}
+        <div className={`relative w-full lg:col-span-7 xl:col-span-8 h-[450px] lg:h-[520px] lg:order-2 flex flex-col rounded-2xl shadow-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-[#121212]' : 'border-slate-300/60 bg-white'}`}>
+          
+          {/* Top Bar (macOS style) */}
+          <div className={`h-12 px-4 flex items-center justify-between border-b transition-colors duration-500 ${isDark ? 'bg-[#1a1a1a] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+            <div className="flex gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]"></div>
+            </div>
+            <div className={`text-[10px] font-semibold tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>
+              SignalNote_Engine.sn
+            </div>
+            <div className="w-12"></div> {/* Spacer for centering */}
+          </div>
+
+          <div className="flex flex-1 overflow-hidden">
+            
+            {/* Left Toolbar */}
+            <div className={`w-12 lg:w-14 hidden md:flex flex-col items-center py-4 gap-6 border-r transition-colors duration-500 ${isDark ? 'bg-[#1a1a1a] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+              <MousePointer2 className={`w-4 h-4 ${isDark ? 'text-white' : 'text-slate-800'}`} />
+              <PenTool className={`w-4 h-4 ${isDark ? 'text-neutral-600 hover:text-white' : 'text-slate-400 hover:text-slate-800'} transition-colors cursor-pointer`} />
+              <Type className={`w-4 h-4 ${isDark ? 'text-neutral-600 hover:text-white' : 'text-slate-400 hover:text-slate-800'} transition-colors cursor-pointer`} />
+              <Square className={`w-4 h-4 ${isDark ? 'text-neutral-600 hover:text-white' : 'text-slate-400 hover:text-slate-800'} transition-colors cursor-pointer`} />
+            </div>
+
+            {/* Canvas Area */}
+            <div className={`flex-1 relative flex items-center justify-center overflow-hidden transition-colors duration-500 ${isDark ? 'bg-[#0f0f0f]' : 'bg-slate-50'}`}>
+              {/* Grid Background */}
+              <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at center, currentColor 1px, transparent 1px)', backgroundSize: '24px 24px', color: isDark ? 'white' : 'black' }}></div>
+              
+              {/* The "Artboard" containing the card */}
+              <div className="relative w-full max-w-[260px] sm:max-w-[280px] aspect-[4/5] z-10 shadow-xl">
+                 
+                 {/* Selection Box / Anchor points (Phase 1) */}
+                 <AnimatePresence>
+                   {activePhase === 0 && (
+                     <motion.div 
+                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                       className="absolute -inset-2 border border-[#00FFFF] z-50 pointer-events-none"
+                     >
+                       <div className="absolute -top-1 -left-1 w-2 h-2 bg-white border border-[#00FFFF]"></div>
+                       <div className="absolute -top-1 -right-1 w-2 h-2 bg-white border border-[#00FFFF]"></div>
+                       <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-white border border-[#00FFFF]"></div>
+                       <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-white border border-[#00FFFF]"></div>
+                     </motion.div>
+                   )}
+                 </AnimatePresence>
+
+                 {/* The Card Content Container */}
+                 <div className={`relative w-full h-full rounded-xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200 bg-white'}`}>
+                    
+                    {/* FASE 1: WIREFRAME */}
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: activePhase === 0 ? 1 : 0, zIndex: activePhase === 0 ? 10 : 0 }}
+                      transition={{ duration: 0.6 }}
+                      className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-100'}`}
+                      style={{ pointerEvents: activePhase === 0 ? 'auto' : 'none' }}
+                    >
+                       <div className={`w-full aspect-[4/3] rounded-xl border-2 border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-neutral-800' : 'bg-white border-slate-300'}`}>
+                          <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 ${isDark ? 'text-neutral-800' : 'text-slate-300'}`} />
+                       </div>
+                       
+                       <div className="flex justify-between items-center mt-2">
+                         <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                         <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                       </div>
+                       <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-300'}`}></div>
+                       
+                       <div className="flex gap-2 mt-2">
+                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                       </div>
+
+                       <div className={`mt-auto h-12 w-full rounded-xl transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                    </motion.div>
+
+                    {/* FASE 2: INYECCIÓN IDENTIDAD */}
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: activePhase === 1 ? 1 : 0, zIndex: activePhase === 1 ? 10 : 0 }}
+                      transition={{ duration: 0.6 }}
+                      className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}
+                      style={{ pointerEvents: activePhase === 1 ? 'auto' : 'none' }}
+                    >
+                       <div className={`w-full aspect-[4/3] rounded-xl flex items-center justify-center transition-colors duration-500 bg-[#0055FF]/10 border border-[#0055FF]/20`}>
+                          <div className="w-16 h-16 bg-[#0055FF]/30 rounded-full blur-xl"></div>
+                       </div>
+                       
+                       <div className="flex justify-between items-center mt-2">
+                         <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
+                         <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
+                       </div>
+                       <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
+                       
+                       <div className="flex gap-2 mt-2">
+                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
+                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
+                       </div>
+
+                       <div className="mt-auto h-12 w-full bg-[#0055FF] rounded-xl shadow-lg shadow-[#0055FF]/20"></div>
+                    </motion.div>
+
+                    {/* FASE 3: OUTPUT FINAL */}
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: activePhase === 2 ? 1 : 0, zIndex: activePhase === 2 ? 10 : 0 }}
+                      transition={{ duration: 0.6 }}
+                      className={`absolute inset-0 flex flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}
+                      style={{ pointerEvents: activePhase === 2 ? 'auto' : 'none' }}
+                    >
+                      <div className="relative w-full aspect-[4/3]">
+                        <img 
+                          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop" 
+                          alt="Luxury Mansion" 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-neutral-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                          Exclusiva
+                        </div>
+                      </div>
+                      
+                      <div className="p-4 lg:p-5 flex flex-col flex-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[#0055FF] font-semibold text-lg">$5,450,000</span>
+                          <span className={`text-[10px] font-medium tracking-widest ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>MLS 4920</span>
+                        </div>
+                        
+                        <h4 className={`text-xl font-medium tracking-tight mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                          1240 Miami Beach Blvd
+                        </h4>
+                        
+                        <div className="flex gap-4 mb-auto">
+                          <div className="flex items-center gap-1.5">
+                            <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>5</span>
+                            <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Beds</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>6</span>
+                            <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Baths</span>
+                          </div>
+                        </div>
+
+                        <button className="w-full mt-4 h-10 lg:h-12 bg-[#0055FF] hover:bg-[#0044CC] text-white rounded-xl font-medium transition-colors duration-300 shadow-lg shadow-[#0055FF]/25">
+                          Agendar Visita
+                        </button>
+                      </div>
+                    </motion.div>
+
+                 </div>
+              </div>
+            </div>
+
+            {/* Right Properties Panel */}
+            <div className={`w-48 xl:w-64 hidden lg:flex flex-col border-l transition-colors duration-500 ${isDark ? 'bg-[#1a1a1a] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+               <div className="p-5 flex flex-col gap-6">
+                 
+                 {/* Dynamic Panel based on Phase */}
+                 {activePhase === 0 && (
+                    <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-4">
+                       <h5 className={`text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Layers</h5>
+                       <div className="flex flex-col gap-2">
+                         <div className={`h-7 rounded ${isDark ? 'bg-[#00FFFF]/10 border border-[#00FFFF]/20' : 'bg-cyan-100 border border-cyan-300'} flex items-center px-3 gap-2`}>
+                           <div className="w-2 h-2 rounded-full bg-[#00FFFF]"></div>
+                           <span className={`text-[11px] font-medium ${isDark ? 'text-[#00FFFF]' : 'text-cyan-800'}`}>Image_Container</span>
+                         </div>
+                         <div className={`h-7 rounded flex items-center px-3 gap-2`}>
+                           <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
+                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Price_Block</span>
+                         </div>
+                         <div className={`h-7 rounded flex items-center px-3 gap-2`}>
+                           <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
+                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>CTA_Button</span>
+                         </div>
+                       </div>
+                    </motion.div>
+                 )}
+                 {activePhase === 1 && (
+                    <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-4">
+                       <h5 className={`text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Brand Variables</h5>
+                       <div className="flex flex-col gap-4">
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded bg-[#0055FF] shadow-lg shadow-[#0055FF]/30 border border-white/20"></div>
+                           <div className="flex flex-col">
+                             <span className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Primary</span>
+                             <span className="text-[10px] text-[#0055FF] font-mono mt-0.5">HEX #0055FF</span>
+                           </div>
+                         </div>
+                         <div className={`p-3 rounded-lg border ${isDark ? 'bg-neutral-900 border-white/5' : 'bg-white border-slate-200'}`}>
+                           <span className={`text-[10px] block mb-2 ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Applying Typography...</span>
+                           <div className={`h-1 w-full rounded-full overflow-hidden ${isDark ? 'bg-neutral-800' : 'bg-slate-100'}`}>
+                              <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full bg-[#0055FF]" />
+                           </div>
+                         </div>
+                       </div>
+                    </motion.div>
+                 )}
+                 {activePhase === 2 && (
+                    <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-4">
+                       <h5 className={`text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Export Ready</h5>
+                       <div className={`w-full p-4 rounded-lg border flex flex-col items-center justify-center gap-2 text-center ${isDark ? 'bg-neutral-900/50 border-[#0055FF]/30' : 'bg-blue-50 border-blue-200'}`}>
+                         <DownloadCloud className="w-8 h-8 text-[#0055FF] mb-1" />
+                         <span className={`text-[12px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Asset Generated</span>
+                         <span className={`text-[10px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>2.4 MB • High-Res PNG</span>
+                       </div>
+                       <button className="w-full py-2.5 mt-2 bg-[#0055FF] text-white text-[11px] font-bold rounded-lg uppercase tracking-wider hover:bg-[#0044CC] transition-colors shadow-lg shadow-[#0055FF]/20">
+                         Deploy Asset
+                       </button>
+                    </motion.div>
+                 )}
+               </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -641,10 +785,41 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className={`py-12 border-t text-center relative z-20 transition-colors duration-500 ${isDarkMode ? 'bg-[#0a0a0a] border-white/10' : 'bg-[#FAFAFA] border-neutral-200/50'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
              <span className={`font-semibold tracking-tight text-sm ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>signalNote</span>
           </div>
+          
+          {/* Skills / Software Logos */}
+          <div className="flex items-center gap-5 py-2 px-5 rounded-full border border-neutral-200/40 dark:border-white/5 bg-neutral-100/30 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:border-neutral-300 dark:hover:border-white/10">
+            <span className={`text-[9px] font-bold tracking-widest uppercase ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>
+              Skills / Software:
+            </span>
+            <div className="flex items-center gap-4">
+              {/* Adobe Illustrator */}
+              <div className="group relative cursor-pointer" title="Adobe Illustrator">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current text-neutral-400 dark:text-neutral-500 group-hover:text-[#FF9A00] transition-colors duration-300">
+                  <path d="M10.53 10.73c-.1-.31-.19-.61-.29-.92-.1-.31-.19-.6-.27-.89-.08-.28-.15-.54-.22-.78h-.02c-.09.43-.2.86-.34 1.29-.15.48-.3.98-.46 1.48-.14.51-.29.98-.44 1.4h2.54c-.06-.211-.14-.46-.23-.721-.09-.269-.18-.559-.27-.859zM19.75.3H4.25C1.9.3 0 2.2 0 4.55v14.9c0 2.35 1.9 4.25 4.25 4.25h15.5c2.35 0 4.25-1.9 4.25-4.25V4.55C24 2.2 22.1.3 19.75.3zM14.7 16.83h-2.091c-.069.01-.139-.04-.159-.11l-.82-2.38H7.91l-.76 2.35c-.02.09-.1.15-.19.141H5.08c-.11 0-.14-.061-.11-.18L8.19 7.38c.03-.1.06-.21.1-.33.04-.21.06-.43.06-.65-.01-.05.03-.1.08-.11h2.59c.08 0 .12.03.13.08l3.65 10.3c.03.109 0 .16-.1.16zm3.4-.15c0 .11-.039.16-.129.16H16.01c-.1 0-.15-.061-.15-.16v-7.7c0-.1.041-.14.131-.14h1.98c.09 0 .129.05.129.14v7.7zm-.209-9.03c-.231.24-.571.37-.911.35-.33.01-.65-.12-.891-.35-.23-.25-.35-.58-.34-.92-.01-.34.12-.66.359-.89.242-.23.562-.35.892-.35.391 0 .689.12.91.35.22.24.34.56.33.89.01.34-.11.67-.349.92z" />
+                </svg>
+              </div>
+
+              {/* Adobe Photoshop */}
+              <div className="group relative cursor-pointer" title="Adobe Photoshop">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current text-neutral-400 dark:text-neutral-500 group-hover:text-[#31A8FF] transition-colors duration-300">
+                  <path d="M9.85 8.42c-.37-.15-.77-.21-1.18-.2-.26 0-.49 0-.68.01-.2-.01-.34 0-.41.01v3.36c.14.01.27.02.39.02h.53c.39 0 .78-.06 1.15-.18.32-.09.6-.28.82-.53.21-.25.31-.59.31-1.03.01-.31-.07-.62-.23-.89-.17-.26-.41-.46-.7-.57zM19.75.3H4.25C1.9.3 0 2.2 0 4.55v14.899c0 2.35 1.9 4.25 4.25 4.25h15.5c2.35 0 4.25-1.9 4.25-4.25V4.55C24 2.2 22.1.3 19.75.3zm-7.391 11.65c-.399.56-.959.98-1.609 1.22-.68.25-1.43.34-2.25.34-.24 0-.4 0-.5-.01s-.24-.01-.43-.01v3.209c.01.07-.04.131-.11.141H5.52c-.08 0-.12-.041-.12-.131V6.42c0-.07.03-.11.1-.11.17 0 .33 0 .56-.01.24-.01.49-.01.76-.02s.56-.01.87-.02c.31-.01.61-.01.91-.01.82 0 1.5.1 2.06.31.5.17.96.45 1.34.82.32.32.57.71.73 1.14.149.42.229.85.229 1.3.001.86-.199 1.57-.6 2.13zm7.091 3.89c-.28.4-.671.709-1.12.891-.49.209-1.09.318-1.811.318-.459 0-.91-.039-1.359-.129-.35-.061-.7-.17-1.02-.32-.07-.039-.121-.109-.111-.189v-1.74c0-.029.011-.07.041-.09.029-.02.06-.01.09.01.39.23.8.391 1.24.49.379.1.779.15 1.18.15.38 0 .65-.051.83-.141.16-.07.27-.24.27-.42 0-.141-.08-.27-.24-.4-.16-.129-.489-.279-.979-.471-.51-.18-.979-.42-1.42-.719-.31-.221-.569-.51-.761-.85-.159-.32-.239-.67-.229-1.021 0-.43.12-.84.341-1.21.25-.4.619-.72 1.049-.92.469-.239 1.059-.349 1.769-.349.41 0 .83.03 1.24.09.3.04.59.12.86.23.039.01.08.05.1.09.01.04.02.08.02.12v1.63c0 .04-.02.08-.05.1-.09.02-.14.02-.18 0-.3-.16-.62-.27-.96-.34-.37-.08-.74-.13-1.12-.13-.2-.01-.41.02-.601.07-.129.03-.24.1-.31.2-.05.08-.08.18-.08.27s.04.18.101.26c.09.11.209.2.34.27.229.12.47.23.709.33.541.18 1.061.43 1.541.73.33.209.6.49.789.83.16.318.24.67.23 1.029.011.471-.129.94-.389 1.331z" />
+                </svg>
+              </div>
+
+              {/* Affinity Suite */}
+              <div className="group relative cursor-pointer" title="Affinity Suite">
+                <svg viewBox="0 0 512 512" className="w-5 h-5 transition-colors duration-300">
+                  <path d="M510 113.76v284.48C510 459.922 459.921 510 398.24 510H113.76C52.078 510 2 459.922 2 398.24V113.76C2 52.079 52.078 2 113.76 2h284.48C459.921 2 510 52.079 510 113.76z" className="fill-neutral-400 dark:fill-neutral-500 group-hover:fill-[#A7F175] transition-colors duration-300" />
+                  <path d="M240.452 347.541c-20.696 0-33.871-12.624-33.871-28.663 0-68.57 179.287-82.28 179.287-155.108 0-44.426-51.168-63.569-116.478-63.569-39.735 0-84.66 7.399-126.377 20.626v86.867c61.481-45.029 129.792-64.309 173.803-64.309 27.662 0 46.443 7.76 46.443 21.678 0 57.308-247.287 48.219-247.287 172.061 0 47.478 32.456 74.675 78.123 74.675 69.07 0 121.307-67.5 160.386-149.78l7.916 2.845c-20.592 50.289-63.171 105.424-71.484 140.864h88.92V222.371H359.31c-29.819 65.138-73.502 125.17-118.86 125.17h.002z" className="fill-[#FAFAFA] dark:fill-[#0a0a0a] transition-colors duration-500" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
           <div className="text-[10px] font-semibold tracking-widest text-neutral-400 uppercase">
             PART OF <span className={isDarkMode ? 'text-white' : 'text-neutral-800'}>SIGNAL LABS</span>
           </div>
