@@ -33,15 +33,18 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
     offset: ["start start", "end end"]
   });
 
-  // OPACIDADES Y DESPLAZAMIENTOS EN Y
-  const text1Opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
-  const text1Y = useTransform(scrollYProgress, [0, 0.25], [0, -30]); 
+  // OPACIDADES Y DESPLAZAMIENTOS EN Y (Ajustados para evitar superposiciones de texto fantasma)
+  const text1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.3], [1, 1, 0]);
+  const text1Y = useTransform(scrollYProgress, [0, 0.25, 0.3], [0, 0, -40]); 
+  const text1Filter = useTransform(scrollYProgress, [0, 0.25, 0.3], ["blur(0px)", "blur(0px)", "blur(8px)"]);
 
-  const text2Opacity = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
-  const text2Y = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [30, 0, 0, -30]); 
+  const text2Opacity = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], [0, 1, 1, 0]);
+  const text2Y = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], [40, 0, 0, -40]); 
+  const text2Filter = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
 
-  const text3Opacity = useTransform(scrollYProgress, [0.75, 0.9, 1], [0, 1, 1]);
-  const text3Y = useTransform(scrollYProgress, [0.75, 0.9, 1], [30, 0, 0]); 
+  const text3Opacity = useTransform(scrollYProgress, [0.7, 0.8, 1], [0, 1, 1]);
+  const text3Y = useTransform(scrollYProgress, [0.7, 0.8, 1], [40, 0, 0]); 
+  const text3Filter = useTransform(scrollYProgress, [0.7, 0.8, 1], ["blur(8px)", "blur(0px)", "blur(0px)"]);
 
   const step1ImgOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]); 
   const step2ImgOpacity = useTransform(scrollYProgress, [0.25, 0.45, 0.75], [0, 1, 0]); 
@@ -58,33 +61,84 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
           <div className="relative w-full aspect-square md:aspect-[4/5] max-h-[40vh] lg:max-h-[75vh] flex items-center justify-center lg:order-2">
             <motion.div style={{ scale: mockupScale }} className={`relative w-full max-w-sm lg:max-w-full h-full rounded-[1.5rem] lg:rounded-[2rem] shadow-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200/50 bg-white'}`}>
               
-              <motion.div style={{ opacity: step1ImgOpacity }} className={`absolute inset-0 p-6 lg:p-8 flex flex-col gap-3 lg:gap-4 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
-                 <div className={`w-full h-1/2 rounded-xl border border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-white/10' : 'bg-slate-200/50 border-slate-300'}`}>
-                    <ImageIcon className={`lg:w-12 lg:h-12 ${isDark ? 'text-neutral-700' : 'text-slate-300'}`} size={32} />
+              {/* FASE 1: WIREFRAME */}
+              <motion.div style={{ opacity: step1ImgOpacity }} className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
+                 <div className={`w-full aspect-[4/3] rounded-xl border-2 border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-neutral-800' : 'bg-slate-200/50 border-slate-300'}`}>
+                    <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 ${isDark ? 'text-neutral-800' : 'text-slate-300'}`} />
                  </div>
-                 <div className={`h-6 lg:h-8 w-3/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                 <div className={`h-3 lg:h-4 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-100'}`}></div>
-                 <div className={`h-3 lg:h-4 w-5/6 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-100'}`}></div>
-                 <div className={`mt-auto h-10 lg:h-12 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                 
+                 <div className="flex justify-between items-center mt-2">
+                   <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                   <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                 </div>
+                 <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-300'}`}></div>
+                 
+                 <div className="flex gap-2 mt-2">
+                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                 </div>
+
+                 <div className={`mt-auto h-12 w-full rounded-xl transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
               </motion.div>
 
-              <motion.div style={{ opacity: step2ImgOpacity }} className={`absolute inset-0 p-6 lg:p-8 flex flex-col gap-3 lg:gap-4 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
-                 <div className={`w-full h-1/2 rounded-xl flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-[#D6007A]/20' : 'bg-[#D6007A]/10'}`}>
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 bg-[#D6007A]/30 rounded-full blur-xl"></div>
+              {/* FASE 2: INYECCIÓN IDENTIDAD */}
+              <motion.div style={{ opacity: step2ImgOpacity }} className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
+                 <div className={`w-full aspect-[4/3] rounded-xl flex items-center justify-center transition-colors duration-500 bg-[#0055FF]/10 border border-[#0055FF]/20`}>
+                    <div className="w-16 h-16 bg-[#0055FF]/30 rounded-full blur-xl"></div>
                  </div>
-                 <div className={`h-6 lg:h-8 w-3/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
-                 <div className={`h-3 lg:h-4 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
-                 <div className={`h-3 lg:h-4 w-5/6 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
-                 <div className="mt-auto h-10 lg:h-12 w-full bg-[#D6007A] rounded-md"></div>
+                 
+                 <div className="flex justify-between items-center mt-2">
+                   <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
+                   <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
+                 </div>
+                 <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
+                 
+                 <div className="flex gap-2 mt-2">
+                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
+                    <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
+                 </div>
+
+                 <div className="mt-auto h-12 w-full bg-[#0055FF] rounded-xl shadow-lg shadow-[#0055FF]/20"></div>
               </motion.div>
 
-              <motion.div style={{ opacity: step3ImgOpacity }} className="absolute inset-0">
-                <img 
-                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Flyer Final" 
-                  className="w-full h-full object-cover"
-                />
-                <div className={`absolute inset-0 pointer-events-none bg-gradient-to-tr ${isDark ? 'from-[#0a0a0a]/20 via-[#0a0a0a]/10 to-[#0a0a0a]/20' : 'from-white/0 via-white/20 to-white/0'}`} />
+              {/* FASE 3: OUTPUT FINAL */}
+              <motion.div style={{ opacity: step3ImgOpacity }} className={`absolute inset-0 flex flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}>
+                <div className="relative w-full aspect-[4/3]">
+                  <img 
+                    src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop" 
+                    alt="Luxury Mansion" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-neutral-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                    Exclusiva
+                  </div>
+                </div>
+                
+                <div className="p-5 flex flex-col flex-1">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-[#0055FF] font-semibold text-lg">$5,450,000</span>
+                    <span className={`text-[10px] font-medium tracking-widest ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>MLS 4920</span>
+                  </div>
+                  
+                  <h4 className={`text-xl font-medium tracking-tight mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    1240 Miami Beach Blvd
+                  </h4>
+                  
+                  <div className="flex gap-4 mb-auto">
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>5</span>
+                      <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Beds</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>6</span>
+                      <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Baths</span>
+                    </div>
+                  </div>
+
+                  <button className="w-full mt-4 h-12 bg-[#0055FF] hover:bg-[#0044CC] text-white rounded-xl font-medium transition-colors duration-300 shadow-lg shadow-[#0055FF]/25">
+                    Agendar Visita
+                  </button>
+                </div>
               </motion.div>
 
             </motion.div>
@@ -94,41 +148,41 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
           <div className="relative h-[200px] lg:h-[350px] flex items-center w-full lg:order-1 text-center lg:text-left">
             
             <motion.div 
-              style={{ opacity: text1Opacity, y: text1Y }} 
+              style={{ opacity: text1Opacity, y: text1Y, filter: text1Filter }} 
               className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 01 / Wireframe</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Jerarquía <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Estructural.</span>
+                Estructura <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Base.</span>
               </h3>
               <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                Antes del diseño, definimos las zonas de alto impacto visual para maximizar la retención de la atención.
+                Definimos el esqueleto de la ficha de propiedad para maximizar el impacto visual y la retención del comprador.
               </p>
             </motion.div>
 
             <motion.div 
-              style={{ opacity: text2Opacity, y: text2Y }} 
+              style={{ opacity: text2Opacity, y: text2Y, filter: text2Filter }} 
               className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 02 / Inyección</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Codificación <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Estricta.</span>
+                Identidad <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Visual.</span>
               </h3>
               <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                Aplicamos su paleta paramétrica. Imposible romper las reglas de su identidad corporativa.
+                Inyectamos de forma estricta sus colores corporativos, tipografía y estilo premium. Imposible romper la marca.
               </p>
             </motion.div>
 
             <motion.div 
-              style={{ opacity: text3Opacity, y: text3Y }} 
+              style={{ opacity: text3Opacity, y: text3Y, filter: text3Filter }} 
               className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 03 / Output</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Activo de <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Conversión.</span>
+                Activo de <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Venta.</span>
               </h3>
               <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
-                Una plantilla dinámica, lista para que su equipo comercial edite textos y despliegue al instante.
+                La ficha de propiedad cobra vida, lista para que su equipo la despliegue y atraiga a clientes de alto valor.
               </p>
             </motion.div>
 
