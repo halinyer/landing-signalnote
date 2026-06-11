@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ArrowDownRight, Fingerprint, Zap, Layers, Activity, Check, Moon, Sun, Image as ImageIcon } from 'lucide-react';
 
 import { PROJECTS_DATA } from './data/projects';
 import { ProjectContent } from './components/Portfolio/ProjectContent';
@@ -23,6 +23,123 @@ const GlobalBackground = ({ isDark }: { isDark: boolean }) => (
     <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-[60vh] max-w-[1200px] rounded-[100%] blur-[120px] ${isDark ? 'bg-white opacity-[0.04]' : 'bg-neutral-900 opacity-[0.02]'} transform-gpu`} />
   </div>
 );
+
+// COMPONENTE: Anatomía con Scrollytelling (Optimizado para Móvil estilo Stripe)
+const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // OPACIDADES Y DESPLAZAMIENTOS EN Y
+  const text1Opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const text1Y = useTransform(scrollYProgress, [0, 0.25], [0, -30]); 
+
+  const text2Opacity = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
+  const text2Y = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [30, 0, 0, -30]); 
+
+  const text3Opacity = useTransform(scrollYProgress, [0.75, 0.9, 1], [0, 1, 1]);
+  const text3Y = useTransform(scrollYProgress, [0.75, 0.9, 1], [30, 0, 0]); 
+
+  const step1ImgOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]); 
+  const step2ImgOpacity = useTransform(scrollYProgress, [0.25, 0.45, 0.75], [0, 1, 0]); 
+  const step3ImgOpacity = useTransform(scrollYProgress, [0.65, 0.85], [0, 1]); 
+  
+  const mockupScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
+
+  return (
+    <section id="anatomia" ref={containerRef} className={`relative h-[300vh] border-t transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a]/30 border-white/10' : 'bg-white border-slate-200/50'}`}>
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 w-full flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-24 items-center pt-20 lg:pt-0">
+          
+          {/* LADO DERECHO (Móvil: Arriba) - El Mockup */}
+          <div className="relative w-full aspect-square md:aspect-[4/5] max-h-[40vh] lg:max-h-[75vh] flex items-center justify-center lg:order-2">
+            <motion.div style={{ scale: mockupScale }} className={`relative w-full max-w-sm lg:max-w-full h-full rounded-[1.5rem] lg:rounded-[2rem] shadow-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200/50 bg-white'}`}>
+              
+              <motion.div style={{ opacity: step1ImgOpacity }} className={`absolute inset-0 p-6 lg:p-8 flex flex-col gap-3 lg:gap-4 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
+                 <div className={`w-full h-1/2 rounded-xl border border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-white/10' : 'bg-slate-200/50 border-slate-300'}`}>
+                    <ImageIcon className={`lg:w-12 lg:h-12 ${isDark ? 'text-neutral-700' : 'text-slate-300'}`} size={32} />
+                 </div>
+                 <div className={`h-6 lg:h-8 w-3/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                 <div className={`h-3 lg:h-4 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-100'}`}></div>
+                 <div className={`h-3 lg:h-4 w-5/6 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-100'}`}></div>
+                 <div className={`mt-auto h-10 lg:h-12 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+              </motion.div>
+
+              <motion.div style={{ opacity: step2ImgOpacity }} className={`absolute inset-0 p-6 lg:p-8 flex flex-col gap-3 lg:gap-4 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
+                 <div className={`w-full h-1/2 rounded-xl flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-[#D6007A]/20' : 'bg-[#D6007A]/10'}`}>
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 bg-[#D6007A]/30 rounded-full blur-xl"></div>
+                 </div>
+                 <div className={`h-6 lg:h-8 w-3/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
+                 <div className={`h-3 lg:h-4 w-full rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
+                 <div className={`h-3 lg:h-4 w-5/6 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
+                 <div className="mt-auto h-10 lg:h-12 w-full bg-[#D6007A] rounded-md"></div>
+              </motion.div>
+
+              <motion.div style={{ opacity: step3ImgOpacity }} className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Flyer Final" 
+                  className="w-full h-full object-cover"
+                />
+                <div className={`absolute inset-0 pointer-events-none bg-gradient-to-tr ${isDark ? 'from-[#0a0a0a]/20 via-[#0a0a0a]/10 to-[#0a0a0a]/20' : 'from-white/0 via-white/20 to-white/0'}`} />
+              </motion.div>
+
+            </motion.div>
+          </div>
+
+          {/* LADO IZQUIERDO (Móvil: Abajo) - Contenedor de Textos */}
+          <div className="relative h-[200px] lg:h-[350px] flex items-center w-full lg:order-1 text-center lg:text-left">
+            
+            <motion.div 
+              style={{ opacity: text1Opacity, y: text1Y }} 
+              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+            >
+              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 01 / Wireframe</span>
+              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Jerarquía <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Estructural.</span>
+              </h3>
+              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+                Antes del diseño, definimos las zonas de alto impacto visual para maximizar la retención de la atención.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              style={{ opacity: text2Opacity, y: text2Y }} 
+              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+            >
+              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 02 / Inyección</span>
+              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Codificación <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Estricta.</span>
+              </h3>
+              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+                Aplicamos su paleta paramétrica. Imposible romper las reglas de su identidad corporativa.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              style={{ opacity: text3Opacity, y: text3Y }} 
+              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+            >
+              <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 03 / Output</span>
+              <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Activo de <span className={`font-serif italic font-light transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Conversión.</span>
+              </h3>
+              <p className={`text-sm md:text-base lg:text-lg font-light max-w-md mx-auto lg:mx-0 leading-relaxed transition-colors duration-500 ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+                Una plantilla dinámica, lista para que su equipo comercial edite textos y despliegue al instante.
+              </p>
+            </motion.div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
 
 export default function App() {
   const [idx, setIdx] = useState(0); 
@@ -103,6 +220,7 @@ export default function App() {
           </div>
           <div className={`hidden md:flex gap-6 items-center text-xs font-semibold uppercase tracking-widest transition-colors duration-500 ${!isScrolled ? 'text-white/80' : (isDarkMode ? 'text-neutral-400' : 'text-neutral-600')}`}>
             <a href="#manifiesto" className={`hover:text-white transition-colors`}>Sistema</a>
+            <a href="#anatomia" className={`hover:text-white transition-colors`}>Anatomía</a>
             <a href="#portafolio" className={`hover:text-white transition-colors`}>Portafolio</a>
             <a href="#planes" className={`hover:text-white transition-colors`}>Planes</a>
             <a href="#" className={`hover:text-white transition-colors`}>Auditoría</a>
@@ -308,6 +426,8 @@ export default function App() {
           </motion.div>
         </div>
       </section>
+
+      <InteractiveAnatomySection isDark={isDarkMode} />
 
       {/* 3. SECCIÓN DE PORTAFOLIO */}
       <section id="portafolio" className="py-32 px-6 relative overflow-hidden min-h-screen flex flex-col justify-center">
