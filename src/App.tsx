@@ -153,7 +153,7 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
               <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at center, currentColor 1px, transparent 1px)', backgroundSize: '24px 24px', color: isDark ? 'white' : 'black' }}></div>
               
               {/* The "Artboard" containing the card */}
-              <div className="relative w-full max-w-[260px] sm:max-w-[280px] aspect-[4/5] z-10 shadow-xl">
+              <div className="relative w-full max-w-[300px] sm:max-w-[320px] aspect-[4/5] z-10 shadow-2xl">
                  
                  {/* Selection Box / Anchor points (Phase 1) */}
                  <AnimatePresence>
@@ -171,32 +171,43 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                  </AnimatePresence>
 
                  {/* The Card Content Container */}
-                 <div className={`relative w-full h-full rounded-xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200 bg-white'}`}>
+                 <div className={`relative w-full h-full rounded-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200 bg-white'} shadow-2xl`}>
                     
                     {/* FASE 1: WIREFRAME */}
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: activePhase === 0 ? 1 : 0, zIndex: activePhase === 0 ? 10 : 0 }}
                       transition={{ duration: 0.6 }}
-                      className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-100'}`}
+                      className={`absolute inset-0 ${isDark ? 'bg-[#0a0a0a]' : 'bg-slate-50'} overflow-hidden`}
                       style={{ pointerEvents: activePhase === 0 ? 'auto' : 'none' }}
                     >
-                       <div className={`w-full aspect-[4/3] rounded-xl border-2 border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-neutral-800' : 'bg-white border-slate-300'}`}>
-                          <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 ${isDark ? 'text-neutral-800' : 'text-slate-300'}`} />
-                       </div>
-                       
-                       <div className="flex justify-between items-center mt-2">
-                         <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                         <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                       </div>
-                       <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-slate-300'}`}></div>
-                       
-                       <div className="flex gap-2 mt-2">
-                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
-                       </div>
+                      {/* Placeholder bg */}
+                      <div className="absolute inset-0 m-3 rounded-xl border-2 border-dashed border-neutral-800 flex flex-col items-center justify-center">
+                         <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 mb-2 text-neutral-700`} />
+                         <span className={`text-[10px] uppercase tracking-widest font-mono text-center px-4 text-neutral-600`}>
+                           Outline Mode
+                         </span>
+                      </div>
 
-                       <div className={`mt-auto h-12 w-full rounded-xl transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-200'}`}></div>
+                      <svg viewBox="0 0 1080 1350" className="absolute inset-0 w-full h-full pointer-events-none z-10" preserveAspectRatio="xMidYMid slice">
+                        {/* Decorative Lines Outline */}
+                        <path fill="none" stroke="#333" strokeWidth="6" strokeDasharray="10,10" d="M376.94,0.17v46a42,42,0,0,1-42,42H-0.06"/>
+                        <path fill="none" stroke="#333" strokeWidth="6" strokeDasharray="10,10" d="M71.94,-0.83V282.62a35.55,35.55,0,0,1-35.55,35.55H-0.06"/>
+                        {/* Logo Box Outline */}
+                        <path fill="none" stroke="#333" strokeWidth="6" strokeDasharray="10,10" d="M758.62,0h321.87v155.08H789.54a30.92,30.92,0,0,1-30.92-30.92V0Z"/>
+                        {/* Ribbon Outline */}
+                        <path fill="none" stroke="#333" strokeWidth="6" strokeDasharray="10,10" d="M974.55,0h105.79v241.41h-62.05a43.74,43.74,0,0,1-43.74-43.74V0Z"/>
+                      </svg>
+
+                      <div className="absolute bottom-6 inset-x-6 z-20 pointer-events-none flex flex-col justify-end">
+                        <div className="w-[70%] h-2 border border-dashed border-neutral-700 mb-[10px]"></div>
+                        <div className="w-8 h-[2px] bg-neutral-700 mb-5"></div>
+                        <div className="flex justify-between w-full mb-8">
+                           <div className="w-[30%] h-6 border-2 border-dashed border-neutral-700 rounded-full"></div>
+                           <div className="w-[30%] h-6 border-2 border-dashed border-neutral-700 rounded-full"></div>
+                        </div>
+                        <div className="w-[40%] h-4 border border-dashed border-neutral-700 mx-auto"></div>
+                      </div>
                     </motion.div>
 
                     {/* FASE 2: INYECCIÓN IDENTIDAD */}
@@ -204,70 +215,64 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: activePhase === 1 ? 1 : 0, zIndex: activePhase === 1 ? 10 : 0 }}
                       transition={{ duration: 0.6 }}
-                      className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}
+                      className={`absolute inset-0 ${isDark ? 'bg-[#0f0f0f]' : 'bg-white'} overflow-hidden`}
                       style={{ pointerEvents: activePhase === 1 ? 'auto' : 'none' }}
                     >
-                       <div className={`w-full aspect-[4/3] rounded-xl flex items-center justify-center transition-colors duration-500 bg-[#0055FF]/10 border border-[#0055FF]/20`}>
-                          <div className="w-16 h-16 bg-[#0055FF]/30 rounded-full blur-xl"></div>
-                       </div>
-                       
-                       <div className="flex justify-between items-center mt-2">
-                         <div className={`h-4 w-1/3 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
-                         <div className={`h-4 w-1/4 rounded-md transition-colors duration-500 bg-[#0055FF]/20`}></div>
-                       </div>
-                       <div className={`h-6 w-3/4 rounded-md mt-1 transition-colors duration-500 ${isDark ? 'bg-neutral-800' : 'bg-slate-900'}`}></div>
-                       
-                       <div className="flex gap-2 mt-2">
-                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
-                          <div className={`h-3 w-12 rounded-full transition-colors duration-500 bg-[#0055FF]/10`}></div>
-                       </div>
+                      {/* Placeholder bg */}
+                      <div className="absolute inset-0 bg-[#ef007e]/5 border border-[#ef007e]/20 flex flex-col items-center justify-center">
+                         <div className="w-20 h-20 bg-[#ef007e]/10 rounded-full blur-2xl absolute"></div>
+                         <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 mb-2 text-[#ef007e]/40`} />
+                         <span className={`text-[10px] uppercase tracking-widest font-mono text-center px-4 text-[#ef007e]/60`}>
+                           Awaiting asset
+                         </span>
+                      </div>
 
-                       <div className="mt-auto h-12 w-full bg-[#0055FF] rounded-xl shadow-lg shadow-[#0055FF]/20"></div>
+                      <svg viewBox="0 0 1080 1350" className="absolute inset-0 w-full h-full pointer-events-none z-10" preserveAspectRatio="xMidYMid slice">
+                        {/* Decorative Lines */}
+                        <path fill="none" stroke="#ef007e" strokeWidth="6" opacity="0.3" d="M376.94,0.17v46a42,42,0,0,1-42,42H-0.06"/>
+                        <path fill="none" stroke="#2fc7ea" strokeWidth="6" d="M71.94,-0.83V282.62a35.55,35.55,0,0,1-35.55,35.55H-0.06" className="drop-shadow-[0_0_10px_rgba(47,199,234,0.3)]" />
+                        {/* Logo Box */}
+                        <path fill="#ef007e" opacity="0.1" d="M758.62,0h321.87v155.08H789.54a30.92,30.92,0,0,1-30.92-30.92V0Z"/>
+                        {/* Ribbon */}
+                        <path fill="#2fc7ea" opacity="0.5" d="M974.55,0h105.79v241.41h-62.05a43.74,43.74,0,0,1-43.74-43.74V0Z"/>
+                      </svg>
+
+                      <div className="absolute bottom-6 inset-x-6 z-20 pointer-events-none flex flex-col justify-end">
+                        <div className="w-[70%] h-2 bg-white/20 rounded-full mb-[10px]"></div>
+                        <div className="w-8 h-[2px] bg-[#ef007e] mb-5 shadow-[0_0_10px_rgba(239,0,126,0.5)]"></div>
+                        <div className="flex justify-between w-full mb-8">
+                           <div className="w-[30%] h-6 bg-[#ef007e]/80 border border-[#ef007e] rounded-full shadow-[0_0_15px_rgba(239,0,126,0.3)]"></div>
+                           <div className="w-[30%] h-6 bg-[#ef007e]/80 border border-[#ef007e] rounded-full shadow-[0_0_15px_rgba(239,0,126,0.3)]"></div>
+                        </div>
+                        <div className="w-[40%] h-4 bg-[#ef007e]/40 rounded-full mx-auto shadow-[0_0_15px_rgba(239,0,126,0.2)]"></div>
+                      </div>
                     </motion.div>
 
-                    {/* FASE 3: OUTPUT FINAL */}
+                    {/* FASE 3: OUTPUT FINAL (DISEÑO SVG) */}
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: activePhase === 2 ? 1 : 0, zIndex: activePhase === 2 ? 10 : 0 }}
                       transition={{ duration: 0.6 }}
-                      className={`absolute inset-0 flex flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}
+                      className={`absolute inset-0 bg-[#030300] overflow-hidden`}
                       style={{ pointerEvents: activePhase === 2 ? 'auto' : 'none' }}
                     >
-                      <div className="relative w-full aspect-[4/3]">
-                        <img 
-                          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop" 
-                          alt="Luxury Mansion" 
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-neutral-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
-                          Exclusiva
-                        </div>
-                      </div>
+                      {/* Background Image */}
+                      <img 
+                        src="/card-mac/Mesa de trabajo 2Reservas1.png" 
+                        alt="Fondo Casa" 
+                        className="absolute inset-0 w-full h-full object-cover scale-[1.02] transition-transform duration-1000 ease-out"
+                      />
                       
-                      <div className="p-4 lg:p-5 flex flex-col flex-1">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-[#0055FF] font-semibold text-lg">$5,450,000</span>
-                          <span className={`text-[10px] font-medium tracking-widest ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>MLS 4920</span>
-                        </div>
-                        
-                        <h4 className={`text-xl font-medium tracking-tight mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                          1240 Miami Beach Blvd
-                        </h4>
-                        
-                        <div className="flex gap-4 mb-auto">
-                          <div className="flex items-center gap-1.5">
-                            <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>5</span>
-                            <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Beds</span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>6</span>
-                            <span className={`text-xs ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Baths</span>
-                          </div>
-                        </div>
+                      {/* Pure SVG Overlay directly from the public file */}
+                      <img
+                        src="/card-mac/Mesa de trabajo 2reservas.svg"
+                        alt="Diseño Original"
+                        className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none drop-shadow-xl"
+                      />
 
-                        <button className="w-full mt-4 h-10 lg:h-12 bg-[#0055FF] hover:bg-[#0044CC] text-white rounded-xl font-medium transition-colors duration-300 shadow-lg shadow-[#0055FF]/25">
-                          Agendar Visita
-                        </button>
+                      {/* Logo Overlay (Bypass browser SVG image block) */}
+                      <div className="absolute top-0 right-0 w-[29.8%] h-[11.48%] z-30 flex items-center justify-center pointer-events-none p-1 sm:p-2">
+                        <img src="/card-mac/Mesa de trabajo 2Reservas2.png" className="w-[80%] h-auto object-contain" alt="Logo Reserva" />
                       </div>
                     </motion.div>
 
@@ -286,15 +291,15 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                        <div className="flex flex-col gap-2">
                          <div className={`h-7 rounded ${isDark ? 'bg-[#00FFFF]/10 border border-[#00FFFF]/20' : 'bg-cyan-100 border border-cyan-300'} flex items-center px-3 gap-2`}>
                            <div className="w-2 h-2 rounded-full bg-[#00FFFF]"></div>
-                           <span className={`text-[11px] font-medium ${isDark ? 'text-[#00FFFF]' : 'text-cyan-800'}`}>Image_Container</span>
+                           <span className={`text-[11px] font-medium ${isDark ? 'text-[#00FFFF]' : 'text-cyan-800'}`}>Image_Bg</span>
                          </div>
                          <div className={`h-7 rounded flex items-center px-3 gap-2`}>
                            <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
-                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Price_Block</span>
+                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Badges_Group</span>
                          </div>
                          <div className={`h-7 rounded flex items-center px-3 gap-2`}>
                            <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-neutral-700' : 'bg-slate-300'}`}></div>
-                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>CTA_Button</span>
+                           <span className={`text-[11px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>Text_Nodes</span>
                          </div>
                        </div>
                     </motion.div>
@@ -304,16 +309,23 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                        <h5 className={`text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Brand Variables</h5>
                        <div className="flex flex-col gap-4">
                          <div className="flex items-center gap-3">
-                           <div className="w-10 h-10 rounded bg-[#0055FF] shadow-lg shadow-[#0055FF]/30 border border-white/20"></div>
+                           <div className="w-10 h-10 rounded bg-[#ef007e] shadow-lg shadow-[#ef007e]/30 border border-white/20"></div>
                            <div className="flex flex-col">
                              <span className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Primary</span>
-                             <span className="text-[10px] text-[#0055FF] font-mono mt-0.5">HEX #0055FF</span>
+                             <span className="text-[10px] text-[#ef007e] font-mono mt-0.5">HEX #EF007E</span>
+                           </div>
+                         </div>
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded bg-[#2fc7ea] shadow-lg shadow-[#2fc7ea]/30 border border-white/20"></div>
+                           <div className="flex flex-col">
+                             <span className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Accent</span>
+                             <span className="text-[10px] text-[#2fc7ea] font-mono mt-0.5">HEX #2FC7EA</span>
                            </div>
                          </div>
                          <div className={`p-3 rounded-lg border ${isDark ? 'bg-neutral-900 border-white/5' : 'bg-white border-slate-200'}`}>
-                           <span className={`text-[10px] block mb-2 ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Applying Typography...</span>
+                           <span className={`text-[10px] block mb-2 ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Injecting Palette...</span>
                            <div className={`h-1 w-full rounded-full overflow-hidden ${isDark ? 'bg-neutral-800' : 'bg-slate-100'}`}>
-                              <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full bg-[#0055FF]" />
+                              <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full bg-gradient-to-r from-[#ef007e] to-[#2fc7ea]" />
                            </div>
                          </div>
                        </div>
@@ -322,12 +334,12 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                  {activePhase === 2 && (
                     <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-4">
                        <h5 className={`text-[11px] font-bold tracking-widest uppercase ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Export Ready</h5>
-                       <div className={`w-full p-4 rounded-lg border flex flex-col items-center justify-center gap-2 text-center ${isDark ? 'bg-neutral-900/50 border-[#0055FF]/30' : 'bg-blue-50 border-blue-200'}`}>
-                         <DownloadCloud className="w-8 h-8 text-[#0055FF] mb-1" />
+                       <div className={`w-full p-4 rounded-lg border flex flex-col items-center justify-center gap-2 text-center ${isDark ? 'bg-neutral-900/50 border-[#ef007e]/30' : 'bg-pink-50 border-pink-200'}`}>
+                         <DownloadCloud className="w-8 h-8 text-[#ef007e] mb-1" />
                          <span className={`text-[12px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Asset Generated</span>
                          <span className={`text-[10px] ${isDark ? 'text-neutral-500' : 'text-slate-500'}`}>2.4 MB • High-Res PNG</span>
                        </div>
-                       <button className="w-full py-2.5 mt-2 bg-[#0055FF] text-white text-[11px] font-bold rounded-lg uppercase tracking-wider hover:bg-[#0044CC] transition-colors shadow-lg shadow-[#0055FF]/20">
+                       <button className="w-full py-2.5 mt-2 bg-[#ef007e] text-white text-[11px] font-bold rounded-lg uppercase tracking-wider hover:bg-[#d1006c] transition-colors shadow-lg shadow-[#ef007e]/20">
                          Deploy Asset
                        </button>
                     </motion.div>
