@@ -33,22 +33,27 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
     offset: ["start start", "end end"]
   });
 
-  // OPACIDADES Y DESPLAZAMIENTOS EN Y (Ajustados para evitar superposiciones de texto fantasma)
-  const text1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.3], [1, 1, 0]);
-  const text1Y = useTransform(scrollYProgress, [0, 0.25, 0.3], [0, 0, -40]); 
-  const text1Filter = useTransform(scrollYProgress, [0, 0.25, 0.3], ["blur(0px)", "blur(0px)", "blur(8px)"]);
+  // OPACIDADES Y DESPLAZAMIENTOS EN Y (Matriz estricta de 0 a 1 para evitar bugs de extrapolación)
+  const text1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.3, 1], [1, 1, 0, 0]);
+  const text1Y = useTransform(scrollYProgress, [0, 0.25, 0.3, 1], [0, 0, -50, -50]); 
+  const text1Display = useTransform(text1Opacity, (v) => v > 0 ? "flex" : "none");
 
-  const text2Opacity = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], [0, 1, 1, 0]);
-  const text2Y = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], [40, 0, 0, -40]); 
-  const text2Filter = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
+  const text2Opacity = useTransform(scrollYProgress, [0, 0.3, 0.4, 0.6, 0.7, 1], [0, 0, 1, 1, 0, 0]);
+  const text2Y = useTransform(scrollYProgress, [0, 0.3, 0.4, 0.6, 0.7, 1], [50, 50, 0, 0, -50, -50]); 
+  const text2Display = useTransform(text2Opacity, (v) => v > 0 ? "flex" : "none");
 
-  const text3Opacity = useTransform(scrollYProgress, [0.7, 0.8, 1], [0, 1, 1]);
-  const text3Y = useTransform(scrollYProgress, [0.7, 0.8, 1], [40, 0, 0]); 
-  const text3Filter = useTransform(scrollYProgress, [0.7, 0.8, 1], ["blur(8px)", "blur(0px)", "blur(0px)"]);
+  const text3Opacity = useTransform(scrollYProgress, [0, 0.7, 0.8, 1], [0, 0, 1, 1]);
+  const text3Y = useTransform(scrollYProgress, [0, 0.7, 0.8, 1], [50, 50, 0, 0]); 
+  const text3Display = useTransform(text3Opacity, (v) => v > 0 ? "flex" : "none");
 
-  const step1ImgOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]); 
-  const step2ImgOpacity = useTransform(scrollYProgress, [0.25, 0.45, 0.75], [0, 1, 0]); 
-  const step3ImgOpacity = useTransform(scrollYProgress, [0.65, 0.85], [0, 1]); 
+  const step1ImgOpacity = useTransform(scrollYProgress, [0, 0.3, 0.35, 1], [1, 1, 0, 0]); 
+  const step1Display = useTransform(step1ImgOpacity, (v) => v > 0 ? "flex" : "none");
+
+  const step2ImgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.45, 0.75, 1], [0, 0, 1, 0, 0]); 
+  const step2Display = useTransform(step2ImgOpacity, (v) => v > 0 ? "flex" : "none");
+
+  const step3ImgOpacity = useTransform(scrollYProgress, [0, 0.65, 0.85, 1], [0, 0, 1, 1]); 
+  const step3Display = useTransform(step3ImgOpacity, (v) => v > 0 ? "flex" : "none");
   
   const mockupScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
 
@@ -62,7 +67,7 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
             <motion.div style={{ scale: mockupScale }} className={`relative w-full max-w-sm lg:max-w-full h-full rounded-[1.5rem] lg:rounded-[2rem] shadow-2xl overflow-hidden border transition-colors duration-500 ${isDark ? 'border-white/10 bg-neutral-900' : 'border-slate-200/50 bg-white'}`}>
               
               {/* FASE 1: WIREFRAME */}
-              <motion.div style={{ opacity: step1ImgOpacity }} className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
+              <motion.div style={{ opacity: step1ImgOpacity, display: step1Display }} className={`absolute inset-0 p-4 lg:p-6 flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-slate-50'}`}>
                  <div className={`w-full aspect-[4/3] rounded-xl border-2 border-dashed flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-neutral-900/50 border-neutral-800' : 'bg-slate-200/50 border-slate-300'}`}>
                     <ImageIcon className={`w-8 h-8 lg:w-10 lg:h-10 ${isDark ? 'text-neutral-800' : 'text-slate-300'}`} />
                  </div>
@@ -82,7 +87,7 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
               </motion.div>
 
               {/* FASE 2: INYECCIÓN IDENTIDAD */}
-              <motion.div style={{ opacity: step2ImgOpacity }} className={`absolute inset-0 p-4 lg:p-6 flex flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
+              <motion.div style={{ opacity: step2ImgOpacity, display: step2Display }} className={`absolute inset-0 p-4 lg:p-6 flex-col gap-3 transition-colors duration-500 ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
                  <div className={`w-full aspect-[4/3] rounded-xl flex items-center justify-center transition-colors duration-500 bg-[#0055FF]/10 border border-[#0055FF]/20`}>
                     <div className="w-16 h-16 bg-[#0055FF]/30 rounded-full blur-xl"></div>
                  </div>
@@ -102,7 +107,7 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
               </motion.div>
 
               {/* FASE 3: OUTPUT FINAL */}
-              <motion.div style={{ opacity: step3ImgOpacity }} className={`absolute inset-0 flex flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}>
+              <motion.div style={{ opacity: step3ImgOpacity, display: step3Display }} className={`absolute inset-0 flex-col transition-colors duration-500 ${isDark ? 'bg-neutral-950' : 'bg-white'}`}>
                 <div className="relative w-full aspect-[4/3]">
                   <img 
                     src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop" 
@@ -148,8 +153,8 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
           <div className="relative h-[200px] lg:h-[350px] flex items-center w-full lg:order-1 text-center lg:text-left">
             
             <motion.div 
-              style={{ opacity: text1Opacity, y: text1Y, filter: text1Filter }} 
-              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+              style={{ opacity: text1Opacity, y: text1Y, display: text1Display }} 
+              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 01 / Wireframe</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -161,8 +166,8 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
             </motion.div>
 
             <motion.div 
-              style={{ opacity: text2Opacity, y: text2Y, filter: text2Filter }} 
-              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+              style={{ opacity: text2Opacity, y: text2Y, display: text2Display }} 
+              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 02 / Inyección</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -174,8 +179,8 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
             </motion.div>
 
             <motion.div 
-              style={{ opacity: text3Opacity, y: text3Y, filter: text3Filter }} 
-              className="absolute inset-0 flex flex-col justify-start lg:justify-center pointer-events-none w-full"
+              style={{ opacity: text3Opacity, y: text3Y, display: text3Display }} 
+              className="absolute inset-0 flex-col justify-start lg:justify-center pointer-events-none w-full"
             >
               <span className={`text-[10px] font-semibold tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-slate-400'}`}>Fase 03 / Output</span>
               <h3 className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
