@@ -426,9 +426,25 @@ export default function App() {
 
       {!isLoading && (
         <motion.div key="main-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      {/* HEADER NAVBAR */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? (isDarkMode ? 'bg-[#0a0a0a]/80 border-white/10 backdrop-blur-xl py-4' : 'bg-[#FAFAFA]/90 border-neutral-200/50 backdrop-blur-xl py-4 shadow-sm') : 'bg-transparent border-transparent py-6'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      {/* HEADER NAVBAR & BANNER */}
+      <div className="fixed top-0 w-full z-50 flex flex-col">
+        {/* TOP BANNER */}
+        <div className="bg-[#111111] text-neutral-300 text-center py-2.5 px-4 text-[11px] md:text-xs tracking-wider border-b border-white/10 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0055FF] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]"></span>
+            </span>
+            <span className="font-semibold text-white uppercase tracking-widest text-[10px]">Oferta Fundadora</span>
+          </div>
+          <span className="hidden md:inline text-neutral-600">|</span>
+          <span>Ecosistema Visual completo por <span className="font-semibold text-white">USD $250/mes</span>.</span>
+          <a href="#planes" className="text-[#0055FF] hover:text-white transition-colors md:ml-1 font-semibold underline underline-offset-4">Ver detalles</a>
+        </div>
+
+        {/* NAV PRINCIPAL */}
+        <nav className={`w-full transition-all duration-500 border-b ${isScrolled ? (isDarkMode ? 'bg-[#0a0a0a]/90 border-white/10 backdrop-blur-xl py-3 md:py-4' : 'bg-[#FAFAFA]/95 border-neutral-200/50 backdrop-blur-xl py-3 md:py-4 shadow-sm') : 'bg-transparent border-transparent py-4'}`}>
+          <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="/logo.svg" alt="signalNote Logo" className={`h-7 w-auto ${(!isScrolled || isDarkMode) ? 'brightness-0 invert' : ''} transition-all duration-500`} />
             <span className={`font-semibold tracking-tight transition-colors duration-500 ${!isScrolled ? 'text-white' : (isDarkMode ? 'text-white' : 'text-neutral-900')}`}>signalNote</span>
@@ -448,7 +464,7 @@ export default function App() {
           </div>
         </div>
       </nav>
-
+      </div>
 
       {/* 1. HERO SECTION (Video Full Bleed) */}
       <header className="relative w-full h-screen min-h-[700px] flex flex-col justify-center items-center overflow-hidden bg-neutral-950">
@@ -709,8 +725,8 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            {/* Plan 1: Básico */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+            {/* Plan 1: Oferta Fundadora */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -718,25 +734,45 @@ export default function App() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className={`${isDarkMode ? 'bg-neutral-900/60 border-white/10' : 'bg-white/60 border-neutral-200/60'} backdrop-blur-md rounded-[2rem] p-8 border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500`}
             >
-              <h4 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-2`}>Básico</h4>
-              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Mantenimiento de presencia digital y diseño base.</p>
-              <div className="mb-8">
-                <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$199</span>
-                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>/mes</span>
+              <h4 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-2`}>Ecosistema Visual</h4>
+              <p className={`text-sm font-light mb-4 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>
+                <span className="font-semibold text-[#0055FF]">Oferta Fundadora.</span> Transforma publicaciones aisladas en una estética visual consistente.
+              </p>
+              <div className="mb-6">
+                <div className="flex items-baseline gap-2">
+                  <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$250</span>
+                  <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>USD/mes</span>
+                </div>
+                <div className={`text-xs mt-2 space-y-1 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
+                  <p className="flex items-center gap-1.5"><span className="font-semibold text-[#0055FF]">Precio fundador</span></p>
+                  <p className="flex items-center gap-1.5"><span className="line-through">Valor regular del servicio: $350/mes</span></p>
+                  <p className="flex items-center gap-1.5">Oferta válida por 3 meses</p>
+                </div>
               </div>
-              <ul className="space-y-4 mb-8">
-                {['12 publicaciones al mes', '8 historias', 'Diseño gráfico', 'Reporte mensual'].map((feat, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-600 font-light">
-                    <Check size={16} className="text-[#0055FF]" /> {feat}
+              <ul className="space-y-3 mb-8">
+                {[
+                  '12 posts (sustituibles x2 piezas simples)', 
+                  '7 historias mensuales', 
+                  'Rediseño y unificación visual', 
+                  'Dirección estética coherente', 
+                  'Hasta 2 rondas de ajustes'
+                ].map((feat, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-neutral-600 font-light">
+                    <Check size={16} className="text-[#0055FF] shrink-0 mt-0.5" /> <span>{feat}</span>
                   </li>
                 ))}
               </ul>
-              <button className={`w-full py-4 rounded-full border ${isDarkMode ? 'border-white/20 text-white hover:bg-white hover:text-neutral-900' : 'border-neutral-200 text-neutral-900 hover:bg-neutral-900 hover:text-white'} text-sm font-semibold transition-colors duration-300`}>
-                Comenzar
-              </button>
+              <a 
+                href="https://wa.me/584241930273?text=Hola%20SignalNote,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20la%20Oferta%20Fundadora%20del%20Ecosistema%20Visual."
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`w-full py-4 rounded-full border ${isDarkMode ? 'border-white/20 text-white hover:bg-white hover:text-neutral-900' : 'border-neutral-200 text-neutral-900 hover:bg-neutral-900 hover:text-white'} text-sm font-semibold transition-colors duration-300 flex justify-center items-center`}
+              >
+                Obtener Oferta
+              </a>
             </motion.div>
 
-            {/* Plan 2: Profesional (Recomendado) */}
+            {/* Plan 2: Rediseño de Logo */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -746,51 +782,44 @@ export default function App() {
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#0055FF] rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
               <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-[10px] font-semibold text-white tracking-widest uppercase mb-4">
-                Destacado
+                Identidad
               </div>
-              <h4 className="text-xl font-semibold text-white mb-2">Profesional</h4>
-              <p className="text-sm text-neutral-400 font-light mb-6">Gestión activa y campañas para generar prospectos.</p>
-              <div className="mb-8">
-                <span className="text-4xl font-light tracking-tighter text-white">$599</span>
-                <span className="text-sm text-neutral-400">/mes</span>
+              <h4 className="text-xl font-semibold text-white mb-2">Rediseño de Logo</h4>
+              <p className="text-sm text-neutral-400 font-light mb-6">Identidad profesional, funcional y alineada con su posicionamiento.</p>
+              <div className="mb-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-light tracking-tighter text-white">$170</span>
+                  <span className="text-sm text-neutral-400">USD</span>
+                </div>
+                <div className="text-xs mt-2 space-y-1 text-neutral-400">
+                  <p className="flex items-center gap-1.5"><span className="font-semibold text-[#0055FF]">Precio fundador</span></p>
+                  <p className="flex items-center gap-1.5"><span className="line-through">Precio regular: $250</span></p>
+                  <p className="flex items-center gap-1.5">Pago: 50% inicio / 50% final</p>
+                </div>
               </div>
-              <ul className="space-y-4 mb-8">
-                {['16 publicaciones', '12 historias', 'Community management', 'Meta Ads'].map((feat, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-300 font-light">
-                    <Check size={16} className="text-[#0055FF]" /> {feat}
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Análisis y 3 rutas bocetadas', 
+                  'Desarrollo de propuesta y ajustes', 
+                  'Logo en versiones principales y variantes', 
+                  'Paleta de color y tipografías', 
+                  'Manual básico de marca'
+                ].map((feat, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-neutral-300 font-light">
+                    <Check size={16} className="text-[#0055FF] shrink-0 mt-0.5" /> <span>{feat}</span>
                   </li>
                 ))}
               </ul>
-              <button className="w-full py-4 rounded-full bg-white text-sm font-semibold text-neutral-900 hover:bg-[#0055FF] hover:text-white transition-colors duration-300">
-                Actualizar a Profesional
-              </button>
+              <a 
+                href="https://wa.me/584241930273?text=Hola%20SignalNote,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20servicio%20de%20Redise%C3%B1o%20de%20Logo."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 rounded-full bg-white text-sm font-semibold text-neutral-900 hover:bg-[#0055FF] hover:text-white transition-colors duration-300 flex justify-center items-center"
+              >
+                Obtener Oferta
+              </a>
             </motion.div>
 
-            {/* Plan 3: Premium */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-              className={`${isDarkMode ? 'bg-neutral-900/60 border-white/10' : 'bg-white/60 border-neutral-200/60'} backdrop-blur-md rounded-[2rem] p-8 border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500`}
-            >
-              <h4 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-900'} mb-2`}>Premium</h4>
-              <p className={`text-sm font-light mb-6 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>Marketing integral y producción visual de alto nivel.</p>
-              <div className="mb-8">
-                <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$1,299</span>
-                <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>/mes</span>
-              </div>
-              <ul className="space-y-4 mb-8">
-                {['Todo lo anterior', 'Producción audiovisual', 'Estrategia de marketing', 'Reunión semanal'].map((feat, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-neutral-600 font-light">
-                    <Check size={16} className="text-[#FF00D4]" /> {feat}
-                  </li>
-                ))}
-              </ul>
-              <button className={`w-full py-4 rounded-full border ${isDarkMode ? 'border-white/20 text-white hover:bg-white hover:text-neutral-900' : 'border-neutral-200 text-neutral-900 hover:bg-neutral-900 hover:text-white'} text-sm font-semibold transition-colors duration-300`}>
-                Contactar Ventas
-              </button>
-            </motion.div>
           </div>
         </div>
       </section>
