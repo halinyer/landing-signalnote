@@ -112,7 +112,7 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
                 )}
 
               </div>
-              <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center px-2 gap-1">
+              <div className="mt-4 flex flex-col items-center text-center md:flex-row md:justify-between md:items-center px-2 gap-1">
                 <h4 className={`text-sm font-semibold tracking-wide uppercase ${textColor}`}>{item.title}</h4>
                 <p className={`text-xs ${subTextColor} font-serif italic`}>{item.subtitle}</p>
               </div>

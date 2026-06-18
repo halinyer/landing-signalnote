@@ -484,6 +484,9 @@ export default function App() {
             loop 
             muted 
             playsInline
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
             className="absolute inset-0 w-full h-full object-cover z-0 transform-gpu"
             src="/hero-video.mp4" 
           />
@@ -651,7 +654,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: node.delay }}
-                className={`absolute z-10 ${isDarkMode ? 'bg-neutral-900/90 border-white/10' : 'bg-white/90 border-neutral-100'} backdrop-blur-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-lg flex flex-col items-center hover:-translate-y-1 transition-transform duration-300 cursor-default`}
+                className={`absolute z-10 ${isDarkMode ? 'bg-neutral-900/90 border-white/10' : 'bg-white/90 border-neutral-100'} backdrop-blur-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-lg flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300 cursor-default`}
                 style={{ left: node.x, top: node.y, transform: 'translate(-50%, -50%)' }}
               >
                 <span className={`text-[9px] md:text-xs font-semibold whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-neutral-800'}`}>{node.label}</span>
