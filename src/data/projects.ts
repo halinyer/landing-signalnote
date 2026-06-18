@@ -40,28 +40,28 @@ export const PROJECTS_DATA: Project[] = [
         subtitle: 'Plantilla de Reserva Exitosa', 
         span: 'col-span-12 md:col-span-8', 
         height: 'h-[500px]', 
-        imageUrl: '/Recurso 18historia zoom.png' 
+        imageUrl: '/Recurso 18historia zoom.webp' 
       },
       { 
         title: 'Identidad Operativa', 
         subtitle: 'Carnet Corporativo', 
         span: 'col-span-12 md:col-span-4', 
         height: 'h-[500px]', 
-        imageUrl: '/Gemini_Generated_Image_5fas4k5fas4k5fas.png' 
+        imageUrl: '/Gemini_Generated_Image_5fas4k5fas4k5fas.webp' 
       },
       { 
         title: 'Autoridad / Gamificación', 
         subtitle: 'Top Cerrador del Mes', 
         span: 'col-span-12 md:col-span-5', 
         height: 'h-[400px]',
-        imageUrl: '/Gemini_Generated_Image_w3o2qxw3o2qxw3o2.png' 
+        imageUrl: '/Gemini_Generated_Image_w3o2qxw3o2qxw3o2.webp' 
       },
       { 
         title: 'Cultura Organizacional', 
         subtitle: 'Día de las Madres', 
         span: 'col-span-12 md:col-span-7', 
         height: 'h-[400px]',
-        imageUrl: '/ChatGPT Image Jun 10, 2026, 11_57_56 PM.png' 
+        imageUrl: '/ChatGPT Image Jun 10, 2026, 11_57_56 PM.webp' 
       }
     ]
   }

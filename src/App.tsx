@@ -260,6 +260,8 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                       <img 
                         src="/card-mac/Mesa de trabajo 2Reservas1.png" 
                         alt="Fondo Casa" 
+                        loading="lazy" 
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover scale-[1.02] transition-transform duration-1000 ease-out"
                       />
                       
@@ -267,12 +269,14 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
                       <img
                         src="/card-mac/Mesa de trabajo 2reservas.svg"
                         alt="Diseño Original"
+                        loading="lazy" 
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none drop-shadow-xl"
                       />
 
                       {/* Logo Overlay (Bypass browser SVG image block) */}
                       <div className="absolute top-0 right-0 w-[29.8%] h-[11.48%] z-30 flex items-center justify-center pointer-events-none p-1 sm:p-2">
-                        <img src="/card-mac/Mesa de trabajo 2Reservas2.png" className="w-[80%] h-auto object-contain" alt="Logo Reserva" />
+                        <img src="/card-mac/Mesa de trabajo 2Reservas2.png" loading="lazy" decoding="async" className="w-[80%] h-auto object-contain" alt="Logo Reserva" />
                       </div>
                     </motion.div>
 

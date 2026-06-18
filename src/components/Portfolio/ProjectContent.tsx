@@ -31,7 +31,7 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
       <div className={`p-12 md:p-20 flex flex-col items-center justify-center border-b ${innerBorderColor} ${headerBgColor} transition-colors duration-500`}>
         <div className={`w-24 h-24 mb-6 rounded-2xl ${isDark ? 'bg-neutral-900 border-white/10' : 'bg-white border-neutral-100'} shadow-sm border flex flex-col items-center justify-center transition-colors duration-500 overflow-hidden`}>
             {project.brandConfig.logoUrl ? (
-                <img src={project.brandConfig.logoUrl} alt={`${project.clientName} Logo`} className={`max-w-full max-h-full object-contain ${isDark ? '' : 'mix-blend-multiply'}`} />
+                <img src={project.brandConfig.logoUrl} alt={`${project.clientName} Logo`} loading="lazy" decoding="async" className={`max-w-full max-h-full object-contain ${isDark ? '' : 'mix-blend-multiply'}`} />
             ) : (
                 <span className={`text-3xl font-serif italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>{project.brandConfig.logoText}</span>
             )}
@@ -100,6 +100,8 @@ export const ProjectContent = ({ project, isDark = false }: ProjectContentProps)
                   <img 
                     src={item.imageUrl} 
                     alt={item.title} 
+                    loading="lazy" 
+                    decoding="async"
                     className={`w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-[1.03]`} 
                   />
                 ) : (
