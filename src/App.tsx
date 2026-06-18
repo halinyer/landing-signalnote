@@ -38,7 +38,7 @@ const InteractiveAnatomySection = ({ isDark }: { isDark: boolean }) => {
 
     const timer = window.setInterval(() => {
       setActivePhase((prev) => (prev + 1) % 3);
-    }, 4500);
+    }, 3000);
 
     return () => {
       window.clearInterval(timer);
@@ -747,10 +747,10 @@ export default function App() {
                   <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$250</span>
                   <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>USD/mes</span>
                 </div>
-                <div className={`text-xs mt-2 space-y-1 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
-                  <p className="flex items-center gap-1.5"><span className="font-semibold text-[#0055FF]">Precio fundador</span></p>
-                  <p className="flex items-center gap-1.5"><span className="line-through">Valor regular del servicio: $350/mes</span></p>
-                  <p className="flex items-center gap-1.5">Oferta válida por 3 meses</p>
+                <div className={`text-xs sm:text-sm mt-3 space-y-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
+                  <p><span className="font-semibold text-[#0055FF] px-2 py-0.5 bg-[#0055FF]/10 rounded-md">Precio fundador</span></p>
+                  <p><span className="line-through">Valor regular del servicio: $350/mes</span></p>
+                  <p>Oferta válida por 3 meses</p>
                 </div>
               </div>
               <ul className="space-y-3 mb-8">
@@ -795,10 +795,10 @@ export default function App() {
                   <span className="text-4xl font-light tracking-tighter text-white">$170</span>
                   <span className="text-sm text-neutral-400">USD</span>
                 </div>
-                <div className="text-xs mt-2 space-y-1 text-neutral-400">
-                  <p className="flex items-center gap-1.5"><span className="font-semibold text-[#0055FF]">Precio fundador</span></p>
-                  <p className="flex items-center gap-1.5"><span className="line-through">Precio regular: $250</span></p>
-                  <p className="flex items-center gap-1.5">Pago: 50% inicio / 50% final</p>
+                <div className="text-xs sm:text-sm mt-3 space-y-1.5 text-neutral-400">
+                  <p><span className="font-semibold text-[#0055FF] px-2 py-0.5 bg-[#0055FF]/10 rounded-md">Precio fundador</span></p>
+                  <p><span className="line-through">Precio regular: $250</span></p>
+                  <p>Pago: 50% inicio / 50% final</p>
                 </div>
               </div>
               <ul className="space-y-3 mb-8">
