@@ -517,7 +517,7 @@ export default function App() {
             
             <motion.h1 
               variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-              className="text-6xl sm:text-7xl md:text-9xl font-bold tracking-tighter leading-[0.9] text-white mb-6 drop-shadow-2xl"
+              className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] text-white mb-6 drop-shadow-2xl text-center"
             >
               Su creativo.<br />
               <span className="text-white/60">A otro nivel.</span>
@@ -525,7 +525,7 @@ export default function App() {
             
             <motion.p 
               variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } } }}
-              className="text-xl md:text-3xl font-medium tracking-tight max-w-2xl text-neutral-300 drop-shadow-lg"
+              className="text-lg sm:text-xl md:text-3xl font-medium tracking-tight max-w-2xl text-neutral-300 drop-shadow-lg text-center"
             >
               Ecosistemas visuales para el real estate de lujo.
             </motion.p>
@@ -604,7 +604,7 @@ export default function App() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className={`lg:col-span-7 relative h-[550px] ${isDarkMode ? 'bg-neutral-900/50 border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]' : 'bg-white/50 border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)]'} backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center p-8 overflow-hidden group transition-colors duration-500`}
+            className={`lg:col-span-7 relative h-[400px] md:h-[550px] ${isDarkMode ? 'bg-neutral-900/50 border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]' : 'bg-white/50 border-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)]'} backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center p-8 overflow-hidden group transition-colors duration-500`}
           >
             {/* Grid background subtil dentro de la tarjeta */}
             <div className={`absolute inset-0 [background-size:20px_20px] ${isDarkMode ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] opacity-20' : 'bg-[radial-gradient(#000000_1px,transparent_1px)] opacity-[0.15]'}`} />
@@ -630,12 +630,12 @@ export default function App() {
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className={`absolute z-10 w-36 h-36 ${isDarkMode ? 'bg-neutral-950 border-white/10' : 'bg-white border-neutral-100'} shadow-[0_0_40px_rgba(0,85,255,0.2)] rounded-full flex flex-col items-center justify-center group-hover:scale-105 transition-all duration-700 ease-out`}
+              className={`absolute z-10 w-24 h-24 md:w-36 md:h-36 ${isDarkMode ? 'bg-neutral-950 border-white/10' : 'bg-white border-neutral-100'} shadow-[0_0_40px_rgba(0,85,255,0.2)] rounded-full flex flex-col items-center justify-center group-hover:scale-105 transition-all duration-700 ease-out`}
             >
               <div className="absolute inset-0 rounded-full border border-[#0055FF]/30 animate-ping" style={{ animationDuration: '3s' }}></div>
-              <Activity size={32} className="text-[#0055FF] mb-2" strokeWidth={1.5} />
-              <span className={`text-sm font-semibold tracking-tight ${isDarkMode ? 'text-white' : ''}`}>signalNote</span>
-              <span className="text-[10px] text-neutral-400 uppercase tracking-widest mt-0.5">Core System</span>
+              <Activity className="w-6 h-6 md:w-8 md:h-8 text-[#0055FF] mb-1 md:mb-2" strokeWidth={1.5} />
+              <span className={`text-xs md:text-sm font-semibold tracking-tight ${isDarkMode ? 'text-white' : ''}`}>signalNote</span>
+              <span className="text-[8px] md:text-[10px] text-neutral-400 uppercase tracking-widest mt-0.5 text-center">Core System</span>
             </motion.div>
 
             {/* Nodos Satélites (Assets) */}
@@ -651,11 +651,11 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: node.delay }}
-                className={`absolute z-10 ${isDarkMode ? 'bg-neutral-900/90 border-white/10' : 'bg-white/90 border-neutral-100'} backdrop-blur-md px-5 py-3 rounded-xl shadow-lg flex flex-col items-center hover:-translate-y-1 transition-transform duration-300 cursor-default`}
+                className={`absolute z-10 ${isDarkMode ? 'bg-neutral-900/90 border-white/10' : 'bg-white/90 border-neutral-100'} backdrop-blur-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-lg flex flex-col items-center hover:-translate-y-1 transition-transform duration-300 cursor-default`}
                 style={{ left: node.x, top: node.y, transform: 'translate(-50%, -50%)' }}
               >
-                <span className={`text-xs font-semibold ${isDarkMode ? 'text-white' : 'text-neutral-800'}`}>{node.label}</span>
-                <span className="text-[10px] text-neutral-400 mt-0.5">{node.sub}</span>
+                <span className={`text-[9px] md:text-xs font-semibold whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-neutral-800'}`}>{node.label}</span>
+                <span className="text-[7px] md:text-[10px] text-neutral-400 mt-0.5 whitespace-nowrap">{node.sub}</span>
               </motion.div>
             ))}
           </motion.div>
