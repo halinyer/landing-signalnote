@@ -442,7 +442,7 @@ export default function App() {
             <span className="font-semibold text-white uppercase tracking-widest text-[10px]">Oferta Fundadora</span>
           </div>
           <span className="hidden md:inline text-neutral-600">|</span>
-          <span>Ecosistema Visual completo por <span className="font-semibold text-white">USD $250/mes</span>.</span>
+          <span>Ecosistema Visual completo por <span className="font-semibold text-white">USD $150/mes</span>.</span>
           <a href="#planes" className="text-[#0055FF] hover:text-white transition-colors md:ml-1 font-semibold underline underline-offset-4">Ver detalles</a>
         </div>
 
@@ -747,12 +747,12 @@ export default function App() {
               </p>
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$250</span>
+                  <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$150</span>
                   <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>USD/mes</span>
                 </div>
                 <div className={`text-xs sm:text-sm mt-3 space-y-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
                   <p><span className="font-semibold text-[#0055FF] px-2 py-0.5 bg-[#0055FF]/10 rounded-md">Precio fundador</span></p>
-                  <p><span className="line-through">Valor regular del servicio: $350/mes</span></p>
+                  <p><span className="line-through">Valor regular del servicio: $250/mes</span></p>
                   <p>Oferta válida por 3 meses</p>
                 </div>
               </div>
