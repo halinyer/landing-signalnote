@@ -774,7 +774,7 @@ export default function App() {
                 </div>
                 <div className={`text-xs sm:text-sm mt-3 space-y-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
                   <p><span className="font-semibold text-[#0055FF] px-2 py-0.5 bg-[#0055FF]/10 rounded-md">Precio fundador</span></p>
-                  <p><span className="line-through">Valor regular del servicio: $350/mes</span> (Se está ahorrando $200)</p>
+                  <p><span className="line-through">Valor regular del servicio: $200/mes</span> (Se está ahorrando $50)</p>
                   <p>Oferta válida por 3 meses</p>
                 </div>
               </div>
