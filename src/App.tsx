@@ -368,6 +368,7 @@ export default function App() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   // Guardar la preferencia cada vez que cambie
   useEffect(() => {
@@ -375,11 +376,30 @@ export default function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Esperamos un mínimo de 1 segundo para que la animación del logo se vea bien
+    const minTimer = setTimeout(() => {
+      if (isVideoLoaded) {
+        setIsLoading(false);
+      }
+    }, 1000);
+
+    // Timeout de seguridad: a los 2.5s quitamos el preloader pase lo que pase
+    const maxTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 3500);
-    return () => clearTimeout(timer);
-  }, []);
+    }, 2500);
+
+    return () => {
+      clearTimeout(minTimer);
+      clearTimeout(maxTimer);
+    };
+  }, [isVideoLoaded]);
+
+  // Asegurarnos de quitar el loading si el componente se monta y el video ya estaba en caché
+  useEffect(() => {
+    if (isVideoLoaded) {
+      setTimeout(() => setIsLoading(false), 1000);
+    }
+  }, [isVideoLoaded]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -442,7 +462,7 @@ export default function App() {
             <span className="font-semibold text-white uppercase tracking-widest text-[10px]">Oferta Fundadora</span>
           </div>
           <span className="hidden md:inline text-neutral-600">|</span>
-          <span>Ecosistema Visual completo por <span className="font-semibold text-white">USD $200/mes</span>.</span>
+          <span>Ecosistema Visual completo por <span className="font-semibold text-white">USD $150/mes</span>.</span>
           <a href="#planes" className="text-[#0055FF] hover:text-white transition-colors md:ml-1 font-semibold underline underline-offset-4">Ver detalles</a>
         </div>
 
@@ -487,6 +507,8 @@ export default function App() {
             preload="auto"
             disablePictureInPicture
             disableRemotePlayback
+            onCanPlayThrough={() => setIsVideoLoaded(true)}
+            onLoadedData={() => setIsVideoLoaded(true)}
             className="absolute inset-0 w-full h-full object-cover z-0 transform-gpu"
             src="/hero-video.mp4" 
           />
@@ -747,12 +769,12 @@ export default function App() {
               </p>
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$200</span>
+                  <span className={`text-4xl font-light tracking-tighter ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>$150</span>
                   <span className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-700'}`}>USD/mes</span>
                 </div>
                 <div className={`text-xs sm:text-sm mt-3 space-y-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-500'}`}>
                   <p><span className="font-semibold text-[#0055FF] px-2 py-0.5 bg-[#0055FF]/10 rounded-md">Precio fundador</span></p>
-                  <p><span className="line-through">Valor regular del servicio: $299/mes</span></p>
+                  <p><span className="line-through">Valor regular del servicio: $350/mes</span> <span className="text-green-500 font-medium">(Ahorras $200)</span></p>
                   <p>Oferta válida por 3 meses</p>
                 </div>
               </div>
